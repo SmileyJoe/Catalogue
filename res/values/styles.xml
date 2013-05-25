@@ -1,20 +1,135 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
+    <style name="AppTheme" parent="android:Theme.Light" />
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="header_settings" parent="header_button">
+        <item name="android:background">@drawable/settings</item>
     </style>
-
+    <style name="header_overflow" parent="header_button">
+        <item name="android:background">@drawable/overflow</item>
+    </style>
+    
+    <style name="header_title">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dip</item>
+		<item name="android:textColor">#FFFFFF</item>
+		<item name="android:textSize">20dip</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:shadowDx">2</item>
+		<item name="android:shadowDy">2</item>
+		<item name="android:shadowRadius">2</item>
+		<item name="android:layout_centerVertical">true</item>
+    </style>
+    
+	<style name="header_wrapper">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">40dip</item>
+    </style>
+    
+	<style name="header_icon">
+	    <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dip</item>
+		<item name="android:src">@drawable/ic_launcher</item>
+	</style>
+    
+    <style name="header_button">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_centerVertical">true</item>
+		<item name="android:layout_alignParentRight">true</item>
+		<item name="android:layout_marginLeft">5dip</item>
+		<item name="android:layout_marginRight">5dip</item>
+		<item name="android:padding">3dip</item>
+    </style>
+    
+    <style name="header_settings" parent="header_button">
+        <item name="android:background">@drawable/settings</item>
+    </style>
+    <style name="header_add" parent="header_button">
+        <item name="android:background">@drawable/add</item>
+    </style>
+    <style name="header_search" parent="header_button">
+        <item name="android:background">@drawable/search</item>
+    </style>
+    
+    <style name="heading_one">
+       	<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">25dip</item>
+		<item name="android:textColor">@color/heading_one_text</item>
+		<item name="android:textSize">20dip</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:gravity">center_vertical</item>
+    </style>
+    
+    <style name="heading_two">
+       	<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dip</item>
+		<item name="android:textColor">@color/heading_two_text</item>
+		<item name="android:textSize">15dip</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">5dip</item>
+        <item name="android:layout_marginRight">5dip</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    
+    <style name="heading_two_wrapper">
+        <item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">50dip</item>
+    </style>
+    
+    <style name="drop_menu_item_image">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="drop_menu_item_text">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:paddingLeft">5dip</item>
+		<item name="android:paddingRight">25dip</item>
+		<item name="android:layout_gravity">center_vertical</item>
+    </style>
+    
+    <style name="drop_menu_item_wrapper">
+        <item name="android:layout_height">40dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:orientation">horizontal</item>
+		<item name="android:paddingLeft">5dip</item>
+    </style>
+    
+    <style name="header_drop_down_wrapper">
+       	<item name="android:layout_width">160dip</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:visibility">gone</item>
+		<item name="android:orientation">vertical</item>
+		<item name="android:background">@color/dark_grey</item>
+		<item name="android:layout_marginLeft">20dip</item>
+		<item name="android:layout_marginTop">-8dip</item>
+    </style>
+    
+    <style name="nothing_to_show">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">fill_parent</item>
+		<item name="android:textColor">#000000</item>
+		<item name="android:textSize">15dip</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:paddingLeft">10dip</item>
+		<item name="android:paddingRight">10dip</item>
+		<item name="android:gravity">center</item>
+		<item name="android:shadowColor">#000000</item>
+		<item name="android:background">#FFFFFF</item>
+    </style>
+    
+	<style name="dialog_content">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">fill_parent</item>
+		<item name="android:orientation">vertical</item>
+		<item name="android:padding">10dip</item>
+		<item name="android:background">@color/medium_grey</item>
+	</style>
+    
 </resources>

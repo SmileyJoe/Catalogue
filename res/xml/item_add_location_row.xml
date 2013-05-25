@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/et_quantity"
+        android:hint="0"
+        android:layout_alignParentRight="true">
+    </EditText>
+    <TextView
+        style="@style/heading_two"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:textSize="20dip"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/et_quantity">
+	</TextView>
+</RelativeLayout>

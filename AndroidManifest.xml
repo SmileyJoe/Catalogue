@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Holo.Theme.Sherlock"
-        android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustPan" >
         <activity
             android:name="com.smileyjoedev.catalogue.Main"
             android:label="@string/app_name" >
@@ -22,6 +22,48 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CategoryList"
+            android:label="@string/title_categories" >
+            
+            <intent-filter>
+	            <action android:name="com.smileyjoedev.catalogue.CATEGORY_CHANGED"></action>
+	        </intent-filter>
+        </activity>
+        <activity
+            android:name=".LocationList"
+            android:label="@string/title_locations" >
+            
+            <intent-filter>
+	            <action android:name="com.smileyjoedev.catalogue.LOCATION_CHANGED"></action>
+	        </intent-filter>
+        </activity>
+        <activity
+            android:name=".CategoryNew"
+            android:label="@string/title_category_new" >
+        </activity>
+        <activity
+            android:name=".LocationNew"
+            android:label="@string/title_category_new" >
+        </activity>
+        <activity
+            android:name=".ItemAdd"
+            android:label="@string/title_item_add" >
+        </activity>
+        <activity
+            android:name=".CategorySelector"
+            android:label="@string/title_category_selector" >
+            <intent-filter>
+	            <action android:name="com.smileyjoedev.catalogue.CATEGORY_CHANGED"></action>
+	        </intent-filter>
+        </activity>
+        <activity
+            android:name=".LocationSelector"
+            android:label="@string/title_location_selector" >
+            <intent-filter>
+	            <action android:name="com.smileyjoedev.catalogue.LOCATION_CHANGED"></action>
+	        </intent-filter>
         </activity>
     </application>
 

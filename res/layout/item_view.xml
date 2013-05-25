@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/rl_header_wrapper"
+		style="@style/header_wrapper">
+		<ImageView
+		    style="@style/header_icon"
+	        android:id="@+id/iv_header_image">
+	    </ImageView>
+	    <Button
+			style="@style/header_overflow"
+			android:id="@+id/bt_overflow"
+    		android:text=" ">
+		</Button>
+		<Button
+			style="@style/header_add"
+			android:id="@+id/bt_add_category"
+			android:layout_alignParentRight="false"
+			android:layout_toLeftOf="@id/bt_overflow"
+    		android:text=" ">
+		</Button>
+        <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/tv_activity_title"
+	        android:text="Item View"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentLeft="false"
+    		android:layout_toRightOf="@id/iv_header_image"
+    		android:layout_toLeftOf="@id/bt_add_category">
+	    </TextView>
+	</RelativeLayout>
+	
+	<View 
+	    android:background="@color/blue"
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:id="@+id/header_divider">
+	</View>
+    
+    <TabHost
+		android:id="@android:id/tabhost"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<TabWidget android:id="@android:id/tabs"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+			</TabWidget>
+			<FrameLayout 
+			    android:id="@android:id/tabcontent"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+				<LinearLayout
+				    android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:orientation="vertical"
+					android:id="@+id/ll_item_details">
+					<ImageView
+					    android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:id="@+id/iv_photo">
+					</ImageView>
+					<TextView 
+					    android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/tv_item_title">
+					</TextView>
+					<TextView 
+					    android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/tv_item_description">
+					</TextView>
+					<TextView 
+					    android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/tv_item_quantity">
+					</TextView>
+				    
+				</LinearLayout>
+				<ListView
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:id="@+id/lv_category_list"
+					android:scrollbars="none">
+				</ListView>
+				<ListView
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:id="@+id/lv_location_list"
+					android:scrollbars="none">
+				</ListView>
+			</FrameLayout>
+		</LinearLayout>
+	</TabHost>
+
+</LinearLayout>

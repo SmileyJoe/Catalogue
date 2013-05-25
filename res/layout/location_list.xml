@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LocationList" >
+   	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/rl_new_location_wrapper"
+	    android:layout_alignParentTop="true"
+	    android:background="@color/medium_grey"
+	    android:visibility="gone"
+	    android:paddingBottom="5dip">
+		<Button 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentRight="true"
+		    android:id="@+id/bt_save_location"
+		    android:text="Save"
+		    android:layout_centerVertical="true">
+		</Button>
+		<EditText
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:id="@+id/et_new_location"
+		    android:layout_toLeftOf="@id/bt_save_location"
+		    android:hint="Title"
+		    android:layout_centerVertical="true">
+		</EditText>
+	</RelativeLayout>
+</RelativeLayout>

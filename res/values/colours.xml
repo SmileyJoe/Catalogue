@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="blue">#ff33b5e5</color>
+	<color name="black">#000000</color>
+	<color name="grey">#CCCCCC</color>
+	<color name="white">#FFFFFF</color>
+	<color name="transparent">#00000000</color>
+	<color name="light_grey">#B1B1B1</color>
+	<color name="dark_grey">#3B3B3B</color>
+	<color name="medium_grey">#393939</color>
+	<color name="green">#00FF00</color>
+	<color name="red">#FF0000</color>
+	
+
+<!-- 	<color name="linear_layout">@color/black</color>  -->
+	
+	<!-- Header -->
+	
+	<color name="heading_one_text">@color/blue</color>
+	<color name="heading_two_text">@color/white</color>
+	
+	<!-- Input -->
+	
+	<color name="input_background">@color/black</color>
+	<color name="input_border">@color/blue</color>
+	
+	<!-- Dialog -->
+
+	<color name="dialog_content_background">@color/black</color>
+	
+	<!-- App -->
+	
+	<color name="app_background">@color/black</color>
+	<color name="app_font">@color/grey</color>
+	
+	<!--  Toast -->
+	
+	<color name="toast_text">@color/grey</color>
+	<color name="toast_background">@color/black</color>
+	<color name="toast_border">@color/blue</color>
+	
+	<!-- Pager -->
+	
+	<color name="pager_indicator_selected">@color/white</color>
+	<color name="pager_indicator_backgroundk">@color/black</color>
+	<color name="pager_indicator_footer">@color/blue</color>
+	<color name="pager_indicator_text">@color/white</color>
+	
+	<!-- Spinner -->
+	
+	<color name="spinner_dialog_text">@color/white</color>
+	<color name="spinner_dialog_background">@color/black</color>
+	
+	<!-- Button -->
+	
+	<color name="button_text">@color/black</color>
+	<color name="button_border">@color/blue</color>
+	<color name="button_background">@color/grey</color>
+	<color name="button_stroke">@color/black</color>
+	<color name="button_start">@color/light_grey</color>
+	<color name="button_end">@color/dark_grey</color>
+	<color name="button_pressed">@color/light_grey</color>
+	
+</resources>
