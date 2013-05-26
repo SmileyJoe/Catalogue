@@ -34,8 +34,10 @@
     <string name="title_locations">Locations</string>
     <string name="title_category_new">New</string>
     <string name="title_item_add">New</string>
+    <string name="title_item_list">Items</string>
     <string name="title_category_selector">Choose</string>
     <string name="title_location_selector">Choose</string>
+    <string name="title_search">Search</string>
     
     <string name="tv_num_cat_children_title">No. Sub-Categories: </string>
     <string name="tv_num_items_title">No. Items: </string>

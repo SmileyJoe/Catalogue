@@ -52,6 +52,10 @@
             android:label="@string/title_item_add" >
         </activity>
         <activity
+            android:name=".ItemList"
+            android:label="@string/title_item_list" >
+        </activity>
+        <activity
             android:name=".CategorySelector"
             android:label="@string/title_category_selector" >
             <intent-filter>
@@ -64,6 +68,10 @@
             <intent-filter>
 	            <action android:name="com.smileyjoedev.catalogue.LOCATION_CHANGED"></action>
 	        </intent-filter>
+        </activity>
+        <activity
+            android:name=".Search"
+            android:label="@string/title_search" >
         </activity>
     </application>
 

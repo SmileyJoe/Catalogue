@@ -26,6 +26,8 @@ public class ItemListFragment extends SherlockListFragment{
 	private ItemListAdapter adapter;
 	private boolean onCategories;
 	private boolean onLocations;
+	private boolean onSearch;
+	private String searchTerm;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,13 @@ public class ItemListFragment extends SherlockListFragment{
 			} else {
 				this.items = this.itemAdapter.getByLocation(this.locationId);
 			}
-			
+		} else if(this.onSearch){
+			Debug.d("On Search");
+			if(this.searchTerm.equals("")){
+				this.items = this.itemAdapter.get();
+			} else {
+				this.items = this.itemAdapter.search(this.searchTerm);
+			}
 		} else {
 			Debug.d("On Nothing");
 			this.items = this.itemAdapter.get();
@@ -80,6 +88,7 @@ public class ItemListFragment extends SherlockListFragment{
 	        Debug.d("## onCategories");
 	        this.onCategories = true;
 	        this.onLocations = false;
+	        this.onSearch = false;
 	    } catch(ClassCastException e) {
 	    	this.onCategories = false;
 	    	this.categoryId = -1;
@@ -92,21 +101,33 @@ public class ItemListFragment extends SherlockListFragment{
 	        Debug.d("## onLocations");
 	        this.onLocations = true;
 	        this.onCategories = false;
+	        this.onSearch = false;
 	    } catch(ClassCastException e) {
 	    	this.onLocations = false;
 	    	this.locationId = -1;
 	    }
 	    
-	    if(!this.onCategories && !this.onLocations){
-	    	throw new ClassCastException(activity.toString() + " must implement CategoryDataInterface or LocationDataInterface");
+	    try {
+	    	SearchDataInterface hostInterface;
+	        hostInterface = (SearchDataInterface) activity;
+	        this.searchTerm = hostInterface.getSearchTerm();
+	        Debug.d("## onSearch");
+	        this.onLocations = false;
+	        this.onCategories = false;
+	        this.onSearch = true;
+	    } catch(ClassCastException e) {
+	    	this.onSearch = false;
+	    	this.searchTerm = "";
 	    }
 	    
 	    this.context = activity.getApplicationContext();
 	}
 	
 	public void updateView(){
+		Debug.d("## UpdateView");
 		this.items.clear();
 		this.getItems();
+		Debug.d(this.items.size());
 		this.adapter.setData(this.items);
 		this.adapter.notifyDataSetChanged();
 	}
@@ -118,6 +139,11 @@ public class ItemListFragment extends SherlockListFragment{
 	
 	public void changeLocation(long locationId){
 		this.locationId = locationId;
+		this.updateView();
+	}
+	
+	public void updateSearchResults(String searchTerm){
+		this.searchTerm = searchTerm;
 		this.updateView();
 	}
 	

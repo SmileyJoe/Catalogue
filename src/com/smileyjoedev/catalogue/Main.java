@@ -35,6 +35,9 @@ public class Main extends SherlockActivity implements OnClickListener {
 		
 		Button btItemList = (Button) findViewById(R.id.bt_item_list);
 		btItemList.setOnClickListener(this);
+		
+		Button btSearch = (Button) findViewById(R.id.bt_search);
+		btSearch.setOnClickListener(this);
 	}
 
 	@Override
@@ -48,6 +51,9 @@ public class Main extends SherlockActivity implements OnClickListener {
 				break;
 			case R.id.bt_item_list:
 				startActivity(Intents.itemList(this));
+				break;
+			case R.id.bt_search:
+				startActivity(Intents.search(this));
 				break;
 		}
 		

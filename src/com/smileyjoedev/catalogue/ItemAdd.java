@@ -211,6 +211,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 					this.item.setPdtUpdate(pdt);
 					this.itemAdapter.update(this.item);
 				}
+				// TODO: Check if save was ok //
+				Intent resultIntent = new Intent();
+				setResult(Activity.RESULT_OK, resultIntent);
 				finish();
 				break;
 			case R.id.bt_cancel:

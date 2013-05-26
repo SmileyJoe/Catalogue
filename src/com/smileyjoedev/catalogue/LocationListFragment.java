@@ -27,6 +27,8 @@ public class LocationListFragment extends SherlockListFragment{
 	private LocationListAdapter adapter;
 	private ArrayList<Long> locationIdTrail;
 	private LinearLayout llBreadCrumb;
+	private String searchTerm;
+	private boolean onSearch;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,12 @@ public class LocationListFragment extends SherlockListFragment{
 	}
 	
 	public void getLocations(){
-		this.locations = this.locationAdapter.get(this.locationId);
+		if(this.onSearch){
+			this.locations = this.locationAdapter.search(this.searchTerm);
+		} else {
+			this.locations = this.locationAdapter.get(this.locationId);	
+		}
+		
 	}
 	
 	@Override
@@ -57,14 +64,25 @@ public class LocationListFragment extends SherlockListFragment{
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		LocationDataInterface hostInterface;
+		
 		try {
+			LocationDataInterface hostInterface;
 	        hostInterface = (LocationDataInterface) activity;
+	        this.locationId = hostInterface.getLocationId();
 	    } catch(ClassCastException e) {
-	        throw new ClassCastException(activity.toString() + " must implement LocationData");
+	        this.locationId = 0;
 	    }
 	    
-	    this.locationId = hostInterface.getLocationId();
+	    try {
+			SearchDataInterface hostInterface;
+	        hostInterface = (SearchDataInterface) activity;
+	        this.searchTerm = hostInterface.getSearchTerm();
+	        this.onSearch = true;
+	    } catch(ClassCastException e) {
+	        this.searchTerm = "";
+	        this.onSearch = false;
+	    }
+	    
 	    this.context = activity.getApplicationContext();
 	    this.locationAdapter = new DbLocationAdapter(this.context);
 	    this.locationIdTrail = new ArrayList<Long>();
@@ -188,6 +206,11 @@ public class LocationListFragment extends SherlockListFragment{
     	};
     	handler.postDelayed(r, 100L);
     }
+    
+	public void updateSearchResults(String searchTerm){
+		this.searchTerm = searchTerm;
+		this.updateView();
+	}
 	
 }
 

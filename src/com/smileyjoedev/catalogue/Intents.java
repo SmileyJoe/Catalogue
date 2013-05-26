@@ -19,7 +19,7 @@ public class Intents {
 	}
 	
 	public static Intent itemList(Context context){
-		Intent intent = new Intent(context, ItemAdd.class);
+		Intent intent = new Intent(context, ItemList.class);
 		return intent;
 	}
 	
@@ -122,6 +122,12 @@ public class Intents {
 		IntentFilter filter = new IntentFilter();
         filter.addAction(Broadcast.LOCATION_CHANGED);
         context.registerReceiver(receiver, filter);
+	}
+	
+	public static Intent search(Context context){
+		Intent intent = new Intent(context, Search.class);
+		
+		return intent;
 	}
 	
 }

@@ -27,6 +27,8 @@ public class CategoryListFragment extends SherlockListFragment{
 	private CategoryListAdapter adapter;
 	private ArrayList<Long> categoryIdTrail;
 	private LinearLayout llBreadCrumb;
+	private String searchTerm;
+	private boolean onSearch;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,12 @@ public class CategoryListFragment extends SherlockListFragment{
 	}
 	
 	public void getCategories(){
-		this.categories = this.categoryAdapter.get(this.categoryId);
+		if(this.onSearch){
+			this.categories = this.categoryAdapter.search(this.searchTerm);
+		} else {
+			this.categories = this.categoryAdapter.get(this.categoryId);
+		}
+		
 	}
 	
 	@Override
@@ -57,14 +64,26 @@ public class CategoryListFragment extends SherlockListFragment{
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		CategoryDataInterface hostInterface;
+		
 		try {
+			CategoryDataInterface hostInterface;
 	        hostInterface = (CategoryDataInterface) activity;
+	        this.categoryId = hostInterface.getCategoryId();
 	    } catch(ClassCastException e) {
-	        throw new ClassCastException(activity.toString() + " must implement CategoryData");
+	        this.categoryId = 0;
 	    }
 	    
-	    this.categoryId = hostInterface.getCategoryId();
+	    try {
+			SearchDataInterface hostInterface;
+	        hostInterface = (SearchDataInterface) activity;
+	        this.searchTerm = hostInterface.getSearchTerm();
+	        this.onSearch = true;
+	    } catch(ClassCastException e) {
+	        this.searchTerm = "";
+	        this.onSearch = false;
+	    }
+	    
+	    
 	    this.context = activity.getApplicationContext();
 	    this.categoryAdapter = new DbCategoryAdapter(this.context);
 	    this.categoryIdTrail = new ArrayList<Long>();
@@ -185,5 +204,10 @@ public class CategoryListFragment extends SherlockListFragment{
     	};
     	handler.postDelayed(r, 100L);
     }
+    
+	public void updateSearchResults(String searchTerm){
+		this.searchTerm = searchTerm;
+		this.updateView();
+	}
 }
 

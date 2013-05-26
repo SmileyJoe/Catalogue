@@ -26,6 +26,7 @@ public class Constants {
 	public static final int ACTIVITY_CATEGORY_POPUP_DELETE = 14;
 	public static final int ACTIVITY_LOCATION_POPUP_DELETE = 15;
 	public static final int ACTIVITY_ITEM_POPUP_DELETE = 16;
+	public static final int ACTIVITY_ITEM_NEW = 17;
 	
 	public static final int CATEGORY = 1;
 	public static final int LOCATION = 2;

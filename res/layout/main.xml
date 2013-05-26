@@ -29,5 +29,14 @@
         android:layout_below="@id/bt_location_list">
         
     </Button>
+    
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="Search"
+        android:id="@+id/bt_search"
+        android:layout_below="@id/bt_item_list">
+        
+    </Button>
 
 </RelativeLayout>
