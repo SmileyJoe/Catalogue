@@ -72,6 +72,18 @@ public class ItemListFragment extends SherlockListFragment{
 	}
 	
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		// TODO: Save the details, do this for all fragments //
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		// TODO: Restore all the data, do for all fragments //
+	}
+	
+	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
 	}
