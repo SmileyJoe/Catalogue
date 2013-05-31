@@ -90,7 +90,6 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
 				return false;
 			}
 		});
-//        this.etSearch.addTextChangedListener(searchTextWatcher);
 
         MenuItem menuItem = menu.findItem(R.id.menu_search);
         menuItem.setOnActionExpandListener(new OnActionExpandListener() {
