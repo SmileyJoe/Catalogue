@@ -4,16 +4,22 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
 import com.smileyjoedev.genLibrary.Debug;
 
 public class ItemListFragment extends SherlockListFragment{
@@ -28,20 +34,27 @@ public class ItemListFragment extends SherlockListFragment{
 	private boolean onLocations;
 	private boolean onSearch;
 	private String searchTerm;
+	private Item selectedItem;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Debug.d("OnCreate");
 		super.onCreate(savedInstanceState);
 		Debug.d("## onCreate");
-		this.itemAdapter = new DbItemAdapter(this.context);
-		this.getItems();
-		this.adapter = new ItemListAdapter(this.context, this.items);
+		this.restoreSavedState(savedInstanceState);
+		this.init();
 		
 		setListAdapter(adapter);
 	}
 	
+	public void init(){
+		this.itemAdapter = new DbItemAdapter(this.context);
+		this.getItems();
+		this.adapter = new ItemListAdapter(this.context, this.items);
+	}
+	
 	public void getItems(){
-		
+		Debug.d("getItems");
 		if(this.onCategories){
 			Debug.d("On Categories");
 			if(this.categoryId == 0){
@@ -73,24 +86,47 @@ public class ItemListFragment extends SherlockListFragment{
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		Debug.d("onSaveInstanceState");
 		super.onSaveInstanceState(outState);
-		// TODO: Save the details, do this for all fragments //
+		
+		outState.putBoolean(Constants.EXTRA_ON_CATEGORY, this.onCategories);
+		outState.putBoolean(Constants.EXTRA_ON_LOCATION, this.onLocations);
+		outState.putBoolean(Constants.EXTRA_ON_SEARCH, this.onSearch);
+		
+		outState.putString(Constants.EXTRA_SEARCH_TERM, this.searchTerm);
+		outState.putLong(Constants.EXTRA_CATEGORY_ID, this.categoryId);
+		outState.putLong(Constants.EXTRA_LOCATION_ID, this.locationId);
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		Debug.d("onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
-		// TODO: Restore all the data, do for all fragments //
+		this.restoreSavedState(savedInstanceState);
+		this.registerForContextMenu(this.getListView());
+	}
+	
+	private void restoreSavedState(Bundle savedInstanceState){
+		if(savedInstanceState != null){
+			this.onCategories = savedInstanceState.getBoolean(Constants.EXTRA_ON_CATEGORY);
+			this.onLocations = savedInstanceState.getBoolean(Constants.EXTRA_ON_LOCATION);
+			this.onSearch = savedInstanceState.getBoolean(Constants.EXTRA_ON_SEARCH);
+			
+			this.categoryId = savedInstanceState.getLong(Constants.EXTRA_CATEGORY_ID);
+			this.locationId = savedInstanceState.getLong(Constants.EXTRA_LOCATION_ID);
+			this.searchTerm = savedInstanceState.getString(Constants.EXTRA_SEARCH_TERM);
+		}
 	}
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		Debug.d("onListItemClick");
 		Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
-		
+		Debug.d("onAttach");
 		super.onAttach(activity);
 		
 		try {
@@ -136,6 +172,7 @@ public class ItemListFragment extends SherlockListFragment{
 	}
 	
 	public void updateView(){
+		Debug.d("updateView");
 		Debug.d("## UpdateView");
 		this.items.clear();
 		this.getItems();
@@ -145,21 +182,74 @@ public class ItemListFragment extends SherlockListFragment{
 	}
 	
 	public void changeCategory(long categoryId){
+		Debug.d("changeCategory");
 		this.categoryId = categoryId;
 		this.updateView();
 	}
 	
 	public void changeLocation(long locationId){
+		Debug.d("changeLocation");
 		this.locationId = locationId;
 		this.updateView();
 	}
 	
 	public void updateSearchResults(String searchTerm){
+		Debug.d("updateSearchResults");
 		this.searchTerm = searchTerm;
 		this.updateView();
 	}
 	
 	public void getCategory(){
+		Debug.d("getCategory");
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		
+		this.selectedItem = this.items.get(info.position);
+		Debug.d(this.selectedItem);
+		
+		menu.setHeaderTitle(this.getString(R.string.context_heading));
+		
+		menu.add(Menu.NONE, Constants.CONTEXT_ITEM_EDIT, Constants.CONTEXT_ITEM_EDIT, this.getString(R.string.context_edit));
+		menu.add(Menu.NONE, Constants.CONTEXT_ITEM_DELETE, Constants.CONTEXT_ITEM_DELETE, this.getString(R.string.context_delete));
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		int menuItemIndex = item.getItemId();
+
+		switch(menuItemIndex){
+			case Constants.CONTEXT_ITEM_EDIT:
+				startActivityForResult(Intents.itemEdit(this.context, this.selectedItem.getId()), Constants.ACTIVITY_ITEM_EDIT);
+				break;
+			case Constants.CONTEXT_ITEM_DELETE:
+				startActivityForResult(Intents.popupDelete(this.context, Constants.ITEM), Constants.ACTIVITY_ITEM_POPUP_DELETE);
+				break;
+		}
+		return super.onContextItemSelected(item);
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch(requestCode){
+			case Constants.ACTIVITY_ITEM_EDIT:
+				this.updateView();
+				break;
+			case Constants.ACTIVITY_ITEM_POPUP_DELETE:
+				if(resultCode == Activity.RESULT_OK){
+					if(data.getBooleanExtra("result", false)){
+						this.itemAdapter.delete(this.selectedItem);
+						this.updateView();
+					}
+				}
+				break;
+		}
 		
 	}
 	

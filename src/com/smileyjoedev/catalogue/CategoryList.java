@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 public class CategoryList extends SherlockFragmentActivity implements CategoryDataInterface {
 
 	private long categoryId = 0;
-	private ArrayList<Long> categoryIdTrail;
 	
     private BroadcastReceiver categoryChanged = new BroadcastReceiver() {
 
@@ -60,7 +59,6 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 	}
 	
 	private void init(){
-		this.categoryIdTrail = new ArrayList<Long>();
 	}
 
     @Override
@@ -150,6 +148,21 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
     protected void onPause() {
         unregisterReceiver(this.categoryChanged);
         super.onPause();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	outState.putLong(Constants.EXTRA_CATEGORY_ID, this.categoryId);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	if(savedInstanceState != null){
+    		this.categoryId = savedInstanceState.getLong(Constants.EXTRA_CATEGORY_ID);
+    	}
     }
     
     private CategoryListFragment getCategoryFragment(){

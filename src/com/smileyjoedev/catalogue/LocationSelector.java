@@ -32,14 +32,14 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
 	private DbLocationAdapter locationAdapter;
 	private ArrayList<Location> locations;
 	private Views views;
-	private long locId;
+	private long locationId;
 	
 	private BroadcastReceiver locationChanged = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-        	locId = intent.getLongExtra(Constants.EXTRA_LOCATION_ID, 0);
-        	if(locId == 0){
+        	locationId = intent.getLongExtra(Constants.EXTRA_LOCATION_ID, 0);
+        	if(locationId == 0){
         		showSave(false);
         	} else {
         		showSave(true);
@@ -60,9 +60,9 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
 
         try{
         	Bundle extras = getIntent().getExtras();
-    		this.locId = extras.getLong("loc_id");
+    		this.locationId = extras.getLong("loc_id");
         } catch(NullPointerException e){
-        	this.locId = 0;
+        	this.locationId = 0;
         }
         
         this.initialize();
@@ -79,6 +79,22 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
     protected void onPause() {
     	unregisterReceiver(this.locationChanged);
     	super.onPause();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	
+    	outState.putLong(Constants.EXTRA_LOCATION_ID, this.locationId);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	if(savedInstanceState != null){
+    		this.locationId = savedInstanceState.getLong(Constants.EXTRA_LOCATION_ID);
+    	}
     }
     
     public void initialize(){
@@ -98,9 +114,9 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
     
     
     public void populateView(){
-    	this.locations = this.locationAdapter.get(this.locId);
+    	this.locations = this.locationAdapter.get(this.locationId);
     	
-    	if(this.locId == 0){
+    	if(this.locationId == 0){
     		this.btSave.setVisibility(View.GONE);
     	}
     	
@@ -112,7 +128,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
 		Intent resultIntent = new Intent();
 		switch(v.getId()){
 			case R.id.bt_save:
-				resultIntent.putExtra("loc_id", this.locId);
+				resultIntent.putExtra("loc_id", this.locationId);
 				setResult(Activity.RESULT_OK, resultIntent);
 				finish();
 				break;
@@ -134,7 +150,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
 	
 	@Override
 	public long getLocationId() {
-		return this.locId;
+		return this.locationId;
 	}
 	
 	@Override
@@ -164,7 +180,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         	case R.id.menu_add_location:
-        		startActivityForResult(Intents.locationNew(this, this.locId), Constants.ACTIVITY_LOCATION_NEW);
+        		startActivityForResult(Intents.locationNew(this, this.locationId), Constants.ACTIVITY_LOCATION_NEW);
 				return true;
 			case android.R.id.home:
 				this.onBackPressed();

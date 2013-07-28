@@ -92,11 +92,12 @@ public class Intents {
 		return intent;
 	}
 	
-	public static Intent locationEdit(Context context, long locId){
-		Intent intent = new Intent(context, LocationAdd.class);
+	public static Intent locationEdit(Context context, long locationId){
+		Intent intent = new Intent(context, LocationNew.class);
 		
 		Bundle extras = new Bundle();
-		extras.putLong("loc_id", locId);
+		extras.putLong(Constants.EXTRA_LOCATION_ID, locationId);
+		extras.putBoolean(Constants.EXTRA_IS_EDIT, true);
 		intent.putExtras(extras);
 		
 		return intent;
@@ -126,6 +127,39 @@ public class Intents {
 	
 	public static Intent search(Context context){
 		Intent intent = new Intent(context, Search.class);
+		
+		return intent;
+	}
+	
+	public static Intent popupDelete(Context context, int sectionId){
+		Intent intent = new Intent(context, com.smileyjoedev.genLibrary.PopupDelete.class);
+		String message = "";
+		String positiveText = "";
+		String negativeText = "";
+		
+		switch(sectionId){
+			case Constants.CATEGORY:
+				message = context.getString(R.string.tv_popup_delete_category);
+				positiveText = context.getString(R.string.bt_popup_delete_positive);
+				negativeText = context.getString(R.string.bt_popup_delete_negative);
+				break;
+			case Constants.ITEM:
+				message = context.getString(R.string.tv_popup_delete_item);
+				positiveText = context.getString(R.string.bt_popup_delete_positive);
+				negativeText = context.getString(R.string.bt_popup_delete_negative);
+				break;
+			case Constants.LOCATION:
+				message = context.getString(R.string.tv_popup_delete_location);
+				positiveText = context.getString(R.string.bt_popup_delete_positive);
+				negativeText = context.getString(R.string.bt_popup_delete_negative);
+				break;
+		}
+		
+		Bundle extras = new Bundle();
+		extras.putString("message", message);
+		extras.putString("positive_text", positiveText);
+		extras.putString("negative_text", negativeText);
+		intent.putExtras(extras);
 		
 		return intent;
 	}

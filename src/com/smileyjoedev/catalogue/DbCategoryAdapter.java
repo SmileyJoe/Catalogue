@@ -205,6 +205,7 @@ public class DbCategoryAdapter {
 		this.deleteChildren(category.getId());
 		db.delete("category", " _id='" + category.getId() + "' ", null);
 		db.delete("item_rel_category", " category_id='" + category.getId() + "' ", null);
+		this.deleteChildren(category.getId());
 		if(!category.getTitle().equals("")){
 			Notify.toast(this.context, R.string.toast_category_deleted, category.getTitle());
 		}

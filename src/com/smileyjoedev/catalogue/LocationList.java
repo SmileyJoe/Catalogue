@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 public class LocationList extends SherlockFragmentActivity implements LocationDataInterface {
 
 	private long locationId = 0;
-	private ArrayList<Long> locationIdTrail;
 	
     private BroadcastReceiver locationChanged = new BroadcastReceiver() {
 
@@ -60,7 +59,6 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 	}
 	
 	private void init(){
-		this.locationIdTrail = new ArrayList<Long>();
 	}
 
     @Override
@@ -149,6 +147,22 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
     protected void onPause() {
         unregisterReceiver(this.locationChanged);
         super.onPause();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	
+    	outState.putLong(Constants.EXTRA_LOCATION_ID, this.locationId);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	if(savedInstanceState != null){
+    		this.locationId = savedInstanceState.getLong(Constants.EXTRA_LOCATION_ID);
+    	}
     }
     
     private LocationListFragment getLocationFragment(){

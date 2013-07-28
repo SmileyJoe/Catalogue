@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.smileyjoedev.genLibrary.Debug;
 
 public class CategoryListFragment extends SherlockListFragment{
 
@@ -29,16 +36,49 @@ public class CategoryListFragment extends SherlockListFragment{
 	private LinearLayout llBreadCrumb;
 	private String searchTerm;
 	private boolean onSearch;
+	private Category selectedCategory;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		this.restoreSavedState(savedInstanceState);
+		this.init();
 		this.getCategories();
 		this.adapter = new CategoryListAdapter(this.context, this.categories);
 		
 		this.populateBreadCrumb();
 		setListAdapter(adapter);
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putBoolean(Constants.EXTRA_ON_SEARCH, this.onSearch);
+		
+		outState.putString(Constants.EXTRA_SEARCH_TERM, this.searchTerm);
+		outState.putLong(Constants.EXTRA_CATEGORY_ID, this.categoryId);
+		
+		outState.putSerializable(Constants.EXTRA_CATEGORY_ID_TRAIL, this.categoryIdTrail);
+	}
+	
+	private void restoreSavedState(Bundle savedInstanceState){
+		if(savedInstanceState != null){
+			this.onSearch = savedInstanceState.getBoolean(Constants.EXTRA_ON_SEARCH);
+			
+			this.categoryId = savedInstanceState.getLong(Constants.EXTRA_CATEGORY_ID);
+			this.searchTerm = savedInstanceState.getString(Constants.EXTRA_SEARCH_TERM);
+			
+			this.categoryIdTrail = (ArrayList<Long>) savedInstanceState.getSerializable(Constants.EXTRA_CATEGORY_ID_TRAIL);
+		}
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		this.restoreSavedState(savedInstanceState);
+	    this.registerForContextMenu(this.getListView());
 	}
 	
 	public void getCategories(){
@@ -58,7 +98,6 @@ public class CategoryListFragment extends SherlockListFragment{
 		this.category = this.categoryAdapter.getDetails(this.categoryId);
 		this.addToBreadCrumb();
 		this.updateView();
-		Broadcast.categoryChanged(this.context, this.categoryId);
 	}
 
 	@Override
@@ -85,7 +124,60 @@ public class CategoryListFragment extends SherlockListFragment{
 	    
 	    
 	    this.context = activity.getApplicationContext();
-	    this.categoryAdapter = new DbCategoryAdapter(this.context);
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		
+		this.selectedCategory = this.categories.get(info.position);
+		Debug.d(this.selectedCategory);
+		
+		menu.setHeaderTitle(this.getString(R.string.context_heading));
+		
+		menu.add(Menu.NONE, Constants.CONTEXT_CATEGORY_EDIT, Constants.CONTEXT_CATEGORY_EDIT, this.getString(R.string.context_edit));
+		menu.add(Menu.NONE, Constants.CONTEXT_CATEGORY_DELETE, Constants.CONTEXT_CATEGORY_DELETE, this.getString(R.string.context_delete));
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		int menuItemIndex = item.getItemId();
+
+		switch(menuItemIndex){
+			case Constants.CONTEXT_CATEGORY_EDIT:
+				startActivityForResult(Intents.categoryEdit(this.context, this.selectedCategory.getId()), Constants.ACTIVITY_CATEGORY_EDIT);
+				break;
+			case Constants.CONTEXT_CATEGORY_DELETE:
+				startActivityForResult(Intents.popupDelete(this.context, Constants.CATEGORY), Constants.ACTIVITY_CATEGORY_POPUP_DELETE);
+				break;
+		}
+		return super.onContextItemSelected(item);
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch(requestCode){
+			case Constants.ACTIVITY_CATEGORY_EDIT:
+				this.updateView();
+				break;
+			case Constants.ACTIVITY_CATEGORY_POPUP_DELETE:
+				if(resultCode == Activity.RESULT_OK){
+					if(data.getBooleanExtra("result", false)){
+						this.categoryAdapter.delete(this.selectedCategory);
+						this.updateView();
+					}
+				}
+				break;
+		}
+		
+	}
+	
+	public void init(){
+		this.categoryAdapter = new DbCategoryAdapter(this.context);
 	    this.categoryIdTrail = new ArrayList<Long>();
 	    this.category = this.categoryAdapter.getDetails(this.categoryId);
 	    this.breadCrumb = this.categoryAdapter.getBreadCrumb(this.categoryId);
@@ -97,6 +189,7 @@ public class CategoryListFragment extends SherlockListFragment{
 		this.getCategories();
 		this.adapter.setData(this.categories);
 		this.adapter.notifyDataSetChanged();
+		Broadcast.categoryChanged(this.context, this.categoryId);
 	}
 	
 	public long getCategoryId(){
@@ -117,7 +210,6 @@ public class CategoryListFragment extends SherlockListFragment{
 			this.removeFromBreadCrumb();
 			if(updateView){
 				this.updateView();
-				Broadcast.categoryChanged(this.context, this.categoryId);
 			}
 			return true;
 		}

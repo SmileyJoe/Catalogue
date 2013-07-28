@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.smileyjoedev.genLibrary.Debug;
 
 public class LocationListFragment extends SherlockListFragment{
 
@@ -29,16 +36,49 @@ public class LocationListFragment extends SherlockListFragment{
 	private LinearLayout llBreadCrumb;
 	private String searchTerm;
 	private boolean onSearch;
+	private Location selectedLocation;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		this.restoreSavedState(savedInstanceState);
+		this.init();
 		this.getLocations();
 		this.adapter = new LocationListAdapter(this.context, this.locations);
 		
 		this.populateBreadCrumb();
 		setListAdapter(adapter);
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putBoolean(Constants.EXTRA_ON_SEARCH, this.onSearch);
+		
+		outState.putString(Constants.EXTRA_SEARCH_TERM, this.searchTerm);
+		outState.putLong(Constants.EXTRA_LOCATION_ID, this.locationId);
+		
+		outState.putSerializable(Constants.EXTRA_LOCATION_ID_TRAIL, this.locationIdTrail);
+	}
+	
+	private void restoreSavedState(Bundle savedInstanceState){
+		if(savedInstanceState != null){
+			this.onSearch = savedInstanceState.getBoolean(Constants.EXTRA_ON_SEARCH);
+			
+			this.locationId = savedInstanceState.getLong(Constants.EXTRA_LOCATION_ID);
+			this.searchTerm = savedInstanceState.getString(Constants.EXTRA_SEARCH_TERM);
+			
+			this.locationIdTrail = (ArrayList<Long>) savedInstanceState.getSerializable(Constants.EXTRA_LOCATION_ID_TRAIL);
+		}
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		this.restoreSavedState(savedInstanceState);
+		this.registerForContextMenu(this.getListView());
 	}
 	
 	public void getLocations(){
@@ -58,7 +98,42 @@ public class LocationListFragment extends SherlockListFragment{
 		this.location = this.locationAdapter.getDetails(this.locationId);
 		this.addToBreadCrumb();
 		this.updateView();
-		Broadcast.locationChanged(this.context, this.locationId);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		int menuItemIndex = item.getItemId();
+
+		switch(menuItemIndex){
+			case Constants.CONTEXT_LOCATION_EDIT:
+				startActivityForResult(Intents.locationEdit(this.context, this.selectedLocation.getId()), Constants.ACTIVITY_LOCATION_EDIT);
+				break;
+			case Constants.CONTEXT_LOCATION_DELETE:
+				startActivityForResult(Intents.popupDelete(this.context, Constants.LOCATION), Constants.ACTIVITY_LOCATION_POPUP_DELETE);
+				break;
+		}
+		return super.onContextItemSelected(item);
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch(requestCode){
+			case Constants.ACTIVITY_LOCATION_EDIT:
+				this.updateView();
+				break;
+			case Constants.ACTIVITY_LOCATION_POPUP_DELETE:
+				if(resultCode == Activity.RESULT_OK){
+					if(data.getBooleanExtra("result", false)){
+						this.locationAdapter.delete(this.selectedLocation);
+						this.updateView();
+					}
+				}
+				break;
+		}
+		
 	}
 
 	@Override
@@ -84,6 +159,23 @@ public class LocationListFragment extends SherlockListFragment{
 	    }
 	    
 	    this.context = activity.getApplicationContext();
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		
+		this.selectedLocation = this.locations.get(info.position);
+		Debug.d(this.selectedLocation);
+		
+		menu.setHeaderTitle(this.getString(R.string.context_heading));
+		
+		menu.add(Menu.NONE, Constants.CONTEXT_LOCATION_EDIT, Constants.CONTEXT_LOCATION_EDIT, this.getString(R.string.context_edit));
+		menu.add(Menu.NONE, Constants.CONTEXT_LOCATION_DELETE, Constants.CONTEXT_LOCATION_DELETE, this.getString(R.string.context_delete));
+	}
+	
+	public void init(){
 	    this.locationAdapter = new DbLocationAdapter(this.context);
 	    this.locationIdTrail = new ArrayList<Long>();
 	    this.location = this.locationAdapter.getDetails(this.locationId);
@@ -96,6 +188,7 @@ public class LocationListFragment extends SherlockListFragment{
 		this.getLocations();
 		this.adapter.setData(this.locations);
 		this.adapter.notifyDataSetChanged();
+		Broadcast.locationChanged(this.context, this.locationId);
 	}
 	
 	public long getLocationId(){
@@ -116,7 +209,6 @@ public class LocationListFragment extends SherlockListFragment{
 			this.removeFromBreadCrumb();
 			if(updateView){
 				this.updateView();
-				Broadcast.locationChanged(this.context, this.locationId);
 			}
 			return true;
 		}

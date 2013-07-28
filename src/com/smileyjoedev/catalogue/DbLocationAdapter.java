@@ -210,6 +210,7 @@ public class DbLocationAdapter {
 		this.deleteChildren(location.getId());
 		db.delete("location", " _id='" + location.getId() + "' ", null);
 		db.delete("item_rel_location", " location_id='" + location.getId() + "' ", null);
+		this.deleteChildren(location.getId());
 		if(!location.getTitle().equals("")){
 			Notify.toast(this.context, R.string.toast_location_deleted, location.getTitle());
 		}
@@ -219,8 +220,8 @@ public class DbLocationAdapter {
 		db.delete("item_rel_location", " item_id='" + itemId + "' ", null);
 	}
 	
-	public void deleteChildren(long catId){
-		long[] childrenIds = this.getChildrenIds(catId);
+	public void deleteChildren(long locId){
+		long[] childrenIds = this.getChildrenIds(locId);
 		
 		if(childrenIds.length > 0){
 			for(int i = 0; i < childrenIds.length; i++){

@@ -2,20 +2,12 @@ package com.smileyjoedev.catalogue;
 
 import java.util.ArrayList;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.smileyjoedev.genLibrary.Camera;
-import com.smileyjoedev.genLibrary.Debug;
-import com.smileyjoedev.genLibrary.GeneralViews;
-import com.smileyjoedev.genLibrary.KeyBoard;
-import com.smileyjoedev.genLibrary.TimeStamp;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +16,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.gson.Gson;
+import com.smileyjoedev.genLibrary.Camera;
+import com.smileyjoedev.genLibrary.Debug;
+import com.smileyjoedev.genLibrary.GeneralViews;
+import com.smileyjoedev.genLibrary.KeyBoard;
+import com.smileyjoedev.genLibrary.TimeStamp;
 
 public class ItemAdd extends SherlockActivity implements OnClickListener {
 	
@@ -43,16 +46,18 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	private LinearLayout llItemCategories;
 	private LinearLayout llItemLocations;
 	private TextView tvItemQuantity;
+	private long totalQuantity;
 	private GeneralViews genViews;
-	private ArrayList<EditText> etsLocQuan;
+//	private ArrayList<EditText> etsLocQuan;
 	private Camera camera;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Debug.d("OnCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_add);
         KeyBoard.forceClose(getWindow());
-
+        this.restoreSavedInstance(savedInstanceState);
         this.initialize();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         try{
@@ -75,8 +80,45 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
         this.populateView();
     }
     
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	Debug.d("onSaveInstanceState");
+    	super.onSaveInstanceState(outState);
+    	
+    	Gson gson = new Gson();
+    	
+    	Debug.d(gson.toJson(item));
+    	
+    	outState.putString(Constants.EXTRA_ITEM, gson.toJson(item));
+    	
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	Debug.d("onRestoreInstanceState");
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	this.restoreSavedInstance(savedInstanceState);
+    }
+    
+    public void restoreSavedInstance(Bundle savedInstanceState){
+    	if(savedInstanceState != null){
+    		Gson gson = new Gson();
+    		
+    		if(this.item == null){
+    			this.item = (Item) gson.fromJson(savedInstanceState.getString(Constants.EXTRA_ITEM), Item.class);
+    			Debug.d(this.item.toString());
+    		}
+    		
+    	}
+    }
+    
     private void initialize(){
-    	this.item = new Item();
+    	Debug.d("initialize");
+    	if(this.item == null){
+    		this.item = new Item();
+    	}
+    	
 		this.edit = false;
     	this.itemAdapter = new DbItemAdapter(this);
     	this.categoryAdapter = new DbCategoryAdapter(this);
@@ -106,13 +148,16 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	
     	this.genViews = new GeneralViews(this);
     	
-    	this.etsLocQuan = new ArrayList<EditText>();
+//    	this.etsLocQuan = new ArrayList<EditText>();
     	
     	this.camera = new Camera(Constants.PHOTO_PATH);
+    	
+    	this.totalQuantity = 0;
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	Debug.d("onCreateOptionsMenu");
         MenuInflater inflater = getSupportMenuInflater();
         
        	inflater.inflate(R.menu.item_add, menu);
@@ -121,6 +166,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     }
     
     public boolean onOptionsItemSelected(MenuItem item) {
+    	Debug.d("onOptionsItemSelected");
         switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();
@@ -132,7 +178,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     }
     
     private void populateView(){
-    	
+    	Debug.d("populateView");
     	this.etTitle.setText(this.item.getTitle());
     	this.etDescription.setText(this.item.getDesc());
     	
@@ -145,8 +191,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     }
     
     public void populateCategories(){
+    	Debug.d("populateCategories");
     	this.llItemCategories.removeAllViews();
-    	
+    	Debug.d("Categories size", this.item.getCategories().size());
     	for(int i = 0; i < this.item.getCategories().size(); i++){
     		if(!this.item.getCategories().get(i).getTitle().equals("")){
     			this.llItemCategories.addView(this.genViews.addField(this.item.getCategories().get(i).getTitle()));
@@ -155,13 +202,16 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     }
     
     public void populateLocations(){
-    	long totQuan = 0;
+    	Debug.d("populateLocations");
+    	this.totalQuantity = 0;
     	this.llItemLocations.removeAllViews();
-    	this.etsLocQuan = new ArrayList<EditText>();
+//    	this.etsLocQuan = new ArrayList<EditText>();
     	
     	for(int i = 0; i < this.item.getLocations().size(); i++){
     		if(!this.item.getLocations().get(i).getLocation().getTitle().equals("")){
-				totQuan += this.item.getLocations().get(i).getQuantity();
+    			final int position = i;
+				totalQuantity += this.item.getLocations().get(i).getQuantity();
+				Debug.d("Total Quantity", totalQuantity);
 				
 				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View view = inflater.inflate(R.xml.item_add_location_row, null);
@@ -170,22 +220,69 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 				EditText etQuan = (EditText) view.findViewById(R.id.et_quantity);
 				
 				tvTitle.setText(this.item.getLocations().get(i).getLocation().getTitle());
+				Debug.d("Quantity", this.item.getLocations().get(i).getQuantity());
 				etQuan.setText(Long.toString(this.item.getLocations().get(i).getQuantity()));
+				
+				etQuan.addTextChangedListener(new TextWatcher() {
+					
+//					boolean first = true;
+					
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {
+					}
+					
+					@Override
+					public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+						long quantity = 0;
+						
+//						if(!first){
+							try{
+								quantity = Long.parseLong(s.toString());
+							} catch(NumberFormatException e){
+								e.printStackTrace();
+							}
+							
+							totalQuantity -= quantity;
+//						}
+						
+					}
+					
+					@Override
+					public void afterTextChanged(Editable s) {
+						long quantity = 0;
+						
+//						if(!first){
+							try{
+								quantity = Long.parseLong(s.toString());
+							} catch(NumberFormatException e){
+								e.printStackTrace();
+							}
+							
+							item.getLocations().get(position).setQuantity(quantity);
+							totalQuantity += quantity;
+							Debug.d("Things have changed", quantity);
+							tvItemQuantity.setText(Long.toString(totalQuantity));
+//						} else {
+//							first = false;
+//						}
+					}
+				});
 				
 				etQuan.setTag(i);
 				
-				this.etsLocQuan.add(etQuan);
+//				this.etsLocQuan.add(etQuan);
 				
 				this.llItemLocations.addView(view);
     		}
 		}
-    	
-    	this.tvItemQuantity.setText(Long.toString(totQuan));
+    	Debug.d("Total Quantity", totalQuantity);
+    	this.tvItemQuantity.setText(Long.toString(this.totalQuantity));
 		
     }
-
+    
 	@Override
 	public void onClick(View v) {
+		Debug.d("onClick");
 		long pdt = 0;
 		switch(v.getId()){
 			case R.id.bt_add_category:
@@ -199,9 +296,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 				this.item.setDesc(this.etDescription.getText().toString());
 				pdt = TimeStamp.getCurrentUt();
 				
-				for(int i = 0; i < this.etsLocQuan.size(); i++){
-					this.item.getLocations().get(Integer.parseInt(this.etsLocQuan.get(i).getTag().toString())).setQuantity(Long.parseLong(this.etsLocQuan.get(i).getText().toString()));
-				}
+//				for(int i = 0; i < this.etsLocQuan.size(); i++){
+//					this.item.getLocations().get(Integer.parseInt(this.etsLocQuan.get(i).getTag().toString())).setQuantity(Long.parseLong(this.etsLocQuan.get(i).getText().toString()));
+//				}
 				
 				if(!this.edit){
 					this.item.setPdtCreate(pdt);
@@ -226,6 +323,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Debug.d("onActivityResult");
 		switch(requestCode){
 			case Constants.ACTIVITY_CATEGORY_SELECTOR:
 				if(resultCode == Activity.RESULT_OK){

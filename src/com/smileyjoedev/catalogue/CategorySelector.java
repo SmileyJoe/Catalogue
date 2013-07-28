@@ -34,14 +34,14 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
 	private DbCategoryAdapter categoryAdapter;
 	private ArrayList<Category> categories;
 	private Views views;
-	private long catId;
+	private long categoryId;
 	
 	private BroadcastReceiver categoryChanged = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-        	catId = intent.getLongExtra(Constants.EXTRA_CATEGORY_ID, 0);
-        	if(catId == 0){
+        	categoryId = intent.getLongExtra(Constants.EXTRA_CATEGORY_ID, 0);
+        	if(categoryId == 0){
         		showSave(false);
         	} else {
         		showSave(true);
@@ -62,9 +62,9 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
 
         try{
         	Bundle extras = getIntent().getExtras();
-    		this.catId = extras.getLong("cat_id");
+    		this.categoryId = extras.getLong("cat_id");
         } catch(NullPointerException e){
-        	this.catId = 0;
+        	this.categoryId = 0;
         }
         
         this.initialize();
@@ -81,6 +81,22 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
     protected void onPause() {
     	unregisterReceiver(this.categoryChanged);
     	super.onPause();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	
+    	outState.putLong(Constants.EXTRA_CATEGORY_ID, this.categoryId);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	if(savedInstanceState != null){
+    		this.categoryId = savedInstanceState.getLong(Constants.EXTRA_CATEGORY_ID);
+    	}
     }
     
     public void initialize(){
@@ -100,9 +116,9 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
     }
     
     public void populateView(){
-    	this.categories = this.categoryAdapter.get(this.catId);
+    	this.categories = this.categoryAdapter.get(this.categoryId);
     	
-    	if(this.catId == 0){
+    	if(this.categoryId == 0){
     		this.btSave.setVisibility(View.GONE);
     	}
     	
@@ -114,7 +130,7 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
 		Intent resultIntent = new Intent();
 		switch(v.getId()){
 			case R.id.bt_save:
-				resultIntent.putExtra("cat_id", this.catId);
+				resultIntent.putExtra("cat_id", this.categoryId);
 				setResult(Activity.RESULT_OK, resultIntent);
 				finish();
 				break;
@@ -136,7 +152,7 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
 	
 	@Override
 	public long getCategoryId() {
-		return this.catId;
+		return this.categoryId;
 	}
 	
 	@Override
@@ -167,7 +183,7 @@ public class CategorySelector extends SherlockFragmentActivity implements OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         	case R.id.menu_add_category:
-        		startActivityForResult(Intents.categoryNew(this, this.catId), Constants.ACTIVITY_CATEGORY_NEW);
+        		startActivityForResult(Intents.categoryNew(this, this.categoryId), Constants.ACTIVITY_CATEGORY_NEW);
 				return true;
 			case android.R.id.home:
 				this.onBackPressed();

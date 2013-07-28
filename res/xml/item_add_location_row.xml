@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
         android:id="@+id/et_quantity"
         android:hint="0"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:inputType="number">
     </EditText>
     <TextView
         style="@style/heading_two"

@@ -48,6 +48,22 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
         this.setTabs();
 	}
 	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putString(Constants.EXTRA_SEARCH_TERM, this.searchTerm);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		if(savedInstanceState != null){
+			this.searchTerm = savedInstanceState.getString(Constants.EXTRA_SEARCH_TERM);
+		}
+	}
+	
 	private void init(){
 		this.searchTerm = "";
 	}
