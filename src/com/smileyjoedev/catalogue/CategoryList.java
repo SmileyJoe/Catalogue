@@ -54,6 +54,18 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        try{
+        	Bundle extras = getIntent().getExtras();
+        	if(extras.containsKey(Constants.EXTRA_CATEGORY_ID)){
+        		this.categoryId = extras.getLong(Constants.EXTRA_CATEGORY_ID);
+        	} else {
+        		this.categoryId = 0;
+        	}
+        } catch(NullPointerException e){
+        	this.categoryId = 0;
+        }
+        
         this.init();
         this.setTabs();
 	}

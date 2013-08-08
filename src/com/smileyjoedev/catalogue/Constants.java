@@ -2,6 +2,8 @@ package com.smileyjoedev.catalogue;
 
 import java.io.File;
 
+import com.smileyjoedev.genLibrary.TimeStamp;
+
 import android.os.Environment;
 
 public class Constants {
@@ -9,6 +11,9 @@ public class Constants {
 	public static final String DB_NAME = "catalogue";
 	public static final int DB_VERSION = 1;
 	public static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + File.separator + "com.joedev" + File.separator + "Catalogue" + File.separator;
+	
+	public static final String DATE_FORMAT_LONG = TimeStamp.DATE_FORMAT_LONG;
+	public static final String DATE_FORMAT_SHORT = TimeStamp.DATE_FORMAT_SHORT;
 	
 	public static final int ACTIVITY_CATEGORY_LIST = 1;
 	public static final int ACTIVITY_CATEGORY_NEW = 2;

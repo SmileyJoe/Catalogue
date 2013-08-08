@@ -2,6 +2,8 @@ package com.smileyjoedev.catalogue;
 
 import java.util.ArrayList;
 
+import com.smileyjoedev.genLibrary.TimeStamp;
+
 public class Item {
 	
 	private long id;
@@ -85,9 +87,17 @@ public class Item {
 	public long getPdtCreate() {
 		return pdtCreate;
 	}
+	
+	public String getCreateFormatted(){
+		return TimeStamp.convertUt(this.getPdtCreate(), Constants.DATE_FORMAT_LONG);
+	}
 
 	public long getPdtUpdate() {
 		return pdtUpdate;
+	}
+	
+	public String getUpdateFormatted(){
+		return TimeStamp.convertUt(this.getPdtUpdate(), Constants.DATE_FORMAT_LONG);
 	}
 
 	public ArrayList<Category> getCategories() {

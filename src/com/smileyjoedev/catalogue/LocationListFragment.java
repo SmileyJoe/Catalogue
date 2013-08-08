@@ -92,12 +92,15 @@ public class LocationListFragment extends SherlockListFragment{
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-		this.locationIdTrail.add(this.locationId);
-		this.locationId = this.locations.get(position).getId();
-		this.location = this.locationAdapter.getDetails(this.locationId);
-		this.addToBreadCrumb();
-		this.updateView();
+		if(this.onSearch){
+			startActivity(Intents.locationList(this.context, this.locations.get(position).getId()));
+		} else {
+			this.locationIdTrail.add(this.locationId);
+			this.locationId = this.locations.get(position).getId();
+			this.location = this.locationAdapter.getDetails(this.locationId);
+			this.addToBreadCrumb();
+			this.updateView();
+		}
 	}
 	
 	@Override

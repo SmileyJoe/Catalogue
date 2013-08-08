@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.smileyjoedev.genLibrary.Debug;
+
 public class Intents {
 
 	public static Intent categoryList(Context context){
@@ -13,8 +15,28 @@ public class Intents {
 		return intent;
 	}
 	
+	public static Intent categoryList(Context context, long categoryId){
+		Intent intent = new Intent(context, CategoryList.class);
+		
+		Bundle extras = new Bundle();
+		extras.putLong(Constants.EXTRA_CATEGORY_ID, categoryId);
+		intent.putExtras(extras);
+		
+		return intent;
+	}
+	
 	public static Intent locationList(Context context){
 		Intent intent = new Intent(context, LocationList.class);
+		return intent;
+	}
+	
+	public static Intent locationList(Context context, long locationId){
+		Intent intent = new Intent(context, LocationList.class);
+		
+		Bundle extras = new Bundle();
+		extras.putLong(Constants.EXTRA_LOCATION_ID, locationId);
+		intent.putExtras(extras);
+		
 		return intent;
 	}
 	
@@ -105,6 +127,8 @@ public class Intents {
 
 	public static Intent itemView(Context context, long itemId){
 		Intent intent = new Intent(context, ItemView.class);
+		
+		Debug.d("Intents item id",itemId);
 		
 		Bundle extras = new Bundle();
 		extras.putLong(Constants.EXTRA_ITEM_ID, itemId);

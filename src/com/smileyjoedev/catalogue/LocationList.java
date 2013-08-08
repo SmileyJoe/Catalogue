@@ -54,6 +54,18 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.location_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        try{
+        	Bundle extras = getIntent().getExtras();
+        	if(extras.containsKey(Constants.EXTRA_LOCATION_ID)){
+        		this.locationId = extras.getLong(Constants.EXTRA_LOCATION_ID);
+        	} else {
+        		this.locationId = 0;
+        	}
+        } catch(NullPointerException e){
+        	this.locationId = 0;
+        }
+        
         this.init();
         this.setTabs();
 	}

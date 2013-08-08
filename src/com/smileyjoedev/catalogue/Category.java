@@ -1,5 +1,9 @@
 package com.smileyjoedev.catalogue;
 
+import java.util.ArrayList;
+
+import android.content.Context;
+
 public class Category {
 	
 	private String title;
@@ -7,6 +11,7 @@ public class Category {
 	private long parentId;
 	private long numChildren;
 	private long numItems;
+	private String breadCrumb;
 
 	/**********************************************
 	 * Constructor
@@ -18,6 +23,7 @@ public class Category {
 		this.setParentId(0);
 		this.setNumChildren(0);
 		this.setNumItems(0);
+		this.setBreadCrumb("");
 	}
 
 	/**********************************************
@@ -44,6 +50,10 @@ public class Category {
 		this.numItems = num;
 	}
 	
+	public void setBreadCrumb(String breadCrumb){
+		this.breadCrumb = breadCrumb;
+	}
+	
 	/**********************************************
 	 * Getters
 	 *********************************************/
@@ -66,6 +76,21 @@ public class Category {
 	
 	public long getNumItems(){
 		return this.numItems;
+	}
+	
+	public String getBreadCrumb(Context context){
+		if(this.breadCrumb.equals("")){
+			DbCategoryAdapter adapter = new DbCategoryAdapter(context);
+			ArrayList<Category> categories = adapter.getBreadCrumb(this.getId());
+			
+			for(int i = categories.size()-1; i >= 0; i--){
+				if(i < (categories.size()-1)){
+					this.breadCrumb += "/";
+				}
+				this.breadCrumb += categories.get(i).getTitle();
+			}
+		}
+		return this.breadCrumb;
 	}
 	
 	@Override

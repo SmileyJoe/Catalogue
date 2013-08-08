@@ -121,7 +121,7 @@ public class ItemListFragment extends SherlockListFragment{
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Debug.d("onListItemClick");
-		Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+		startActivityForResult(Intents.itemView(this.context, ((Item) this.getListView().getItemAtPosition(position)).getId()), Constants.ACTIVITY_ITEM_VIEW);
 	}
 
 	@Override
@@ -248,6 +248,9 @@ public class ItemListFragment extends SherlockListFragment{
 						this.updateView();
 					}
 				}
+				break;
+			case Constants.ACTIVITY_ITEM_VIEW:
+				this.updateView();
 				break;
 		}
 		

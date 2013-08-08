@@ -92,12 +92,16 @@ public class CategoryListFragment extends SherlockListFragment{
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Toast.makeText(getActivity(),getListView().getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-		this.categoryIdTrail.add(this.categoryId);
-		this.categoryId = this.categories.get(position).getId();
-		this.category = this.categoryAdapter.getDetails(this.categoryId);
-		this.addToBreadCrumb();
-		this.updateView();
+		if(this.onSearch){
+			startActivity(Intents.categoryList(this.context, this.categories.get(position).getId()));
+		} else {
+			this.categoryIdTrail.add(this.categoryId);
+			this.categoryId = this.categories.get(position).getId();
+			this.category = this.categoryAdapter.getDetails(this.categoryId);
+			this.addToBreadCrumb();
+			this.updateView();
+		}
+		
 	}
 
 	@Override

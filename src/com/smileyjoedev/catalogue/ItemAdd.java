@@ -192,13 +192,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     
     public void populateCategories(){
     	Debug.d("populateCategories");
-    	this.llItemCategories.removeAllViews();
-    	Debug.d("Categories size", this.item.getCategories().size());
-    	for(int i = 0; i < this.item.getCategories().size(); i++){
-    		if(!this.item.getCategories().get(i).getTitle().equals("")){
-    			this.llItemCategories.addView(this.genViews.addField(this.item.getCategories().get(i).getTitle()));
-    		}
-    	}
+    	
+    	GenViews.itemEditCategory(this, this.llItemCategories, this.item);
+    	
     }
     
     public void populateLocations(){

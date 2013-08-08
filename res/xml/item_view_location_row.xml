@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_quantity"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/heading_two_text"
+		android:textSize="15dip"
+		android:gravity="center_vertical">
+    </TextView>
+	<HorizontalScrollView 
+	    android:id="@+id/hsv_breadcrumb"
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:scrollbars="none"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/tv_quantity">
+		<TextView
+	        style="@style/heading_two"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="0dp"
+	        android:id="@+id/tv_title"
+	        android:textSize="20dip">
+		</TextView>	
+	</HorizontalScrollView>
+</RelativeLayout>
