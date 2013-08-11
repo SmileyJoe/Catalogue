@@ -5,9 +5,13 @@
     android:versionName="1.0" >
     
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="10"
         android:targetSdkVersion="15" />
 
     <application
@@ -24,6 +28,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity 
+            android:name=".ReadNFC">
+			<intent-filter>
+			    <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+			
+			<meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+			    android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
             android:name=".CategoryList"
@@ -60,6 +74,11 @@
         <activity
             android:name=".ItemView"
             android:label="@string/title_item_view" >
+        </activity>
+        <activity
+            android:name=".ReadNfcActivity"
+            android:label="@string/title_read_nfc_activity"
+			android:theme="@style/Holo.Theme.Dialog" >
         </activity>
         <activity
             android:name=".CategorySelector"

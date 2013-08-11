@@ -23,6 +23,7 @@ public class DbCategoryAdapter {
 	private int idCol;
 	private int titleCol;
 	private int parentIdCol;
+	private DbNfcAdapter nfcAdapter;
 	
 	/*****************************************
 	 * CONSTRUCTOR
@@ -32,6 +33,7 @@ public class DbCategoryAdapter {
 		this.context = context;
 		this.dbHelper = new DbHelper(context);
 		this.db = dbHelper.getWritableDatabase();
+		this.nfcAdapter = new DbNfcAdapter(context);
 	}
 	
 	/******************************************
@@ -167,6 +169,8 @@ public class DbCategoryAdapter {
 			ContentValues values = createContentValues(category);
 			dbId = db.insert("category", null, values);
 			if(dbId > 0){
+				category.setId(dbId);
+				this.saveNfc(category);
 				Notify.toast(this.context, R.string.toast_category_saved, category.getTitle());
 			} else {
 				Notify.toast(this.context, R.string.toast_category_saved_error, category.getTitle());
@@ -187,6 +191,14 @@ public class DbCategoryAdapter {
 		return dbId;
 	}
 	
+	private void saveNfc(Category category){
+		if(category.hasNfc()){
+			category.getNfc().setRelId(category.getId());
+			category.getNfc().setRelTypeId(Constants.CATEGORY);
+			this.nfcAdapter.save(category.getNfc());
+		}
+	}
+	
 	/******************************************
 	 * UPDATE
 	 *****************************************/
@@ -194,6 +206,9 @@ public class DbCategoryAdapter {
 	public void update(Category category) {
 		ContentValues values = createContentValues(category);
 		db.update("category", values, " _id = '" + category.getId() + "' ", null);
+		this.nfcAdapter.delete(category.getNfc());
+		
+		this.saveNfc(category);
 		Notify.toast(this.context, R.string.toast_category_updated, category.getTitle());
 	}
 	
@@ -206,6 +221,7 @@ public class DbCategoryAdapter {
 		db.delete("category", " _id='" + category.getId() + "' ", null);
 		db.delete("item_rel_category", " category_id='" + category.getId() + "' ", null);
 		this.deleteChildren(category.getId());
+		this.nfcAdapter.delete(category.getNfc());
 		if(!category.getTitle().equals("")){
 			Notify.toast(this.context, R.string.toast_category_deleted, category.getTitle());
 		}
@@ -228,6 +244,11 @@ public class DbCategoryAdapter {
 	
 	public void deleteItemRel(long itemId){
 		db.delete("item_rel_category", " item_id='" + itemId + "' ", null);
+	}
+	
+	public void deleteItemRel(long itemId, long categoryId){
+		Debug.d("ItemId", itemId, "category id", categoryId);
+		db.delete("item_rel_category", " item_id='" + itemId + "' AND category_id='" + categoryId + "' ", null);
 	}
 	
 	/******************************************
@@ -257,6 +278,7 @@ public class DbCategoryAdapter {
 		category.setParentId(this.cursor.getLong(this.parentIdCol));
 		category.setNumChildren(this.getNumberChildren(category.getId()));
 		category.setNumItems(this.getNumberItems(category.getId()));
+		category.setNfc(this.nfcAdapter.getDetailsByRel(category.getId(), Constants.CATEGORY));
 		
 		return category;
 	}

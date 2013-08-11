@@ -9,7 +9,7 @@ import android.os.Environment;
 public class Constants {
 	
 	public static final String DB_NAME = "catalogue";
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 3;
 	public static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + File.separator + "com.joedev" + File.separator + "Catalogue" + File.separator;
 	
 	public static final String DATE_FORMAT_LONG = TimeStamp.DATE_FORMAT_LONG;
@@ -32,6 +32,7 @@ public class Constants {
 	public static final int ACTIVITY_LOCATION_POPUP_DELETE = 15;
 	public static final int ACTIVITY_ITEM_POPUP_DELETE = 16;
 	public static final int ACTIVITY_ITEM_NEW = 17;
+	public static final int ACTIVITY_READ_NFC = 18;
 	
 	public static final int CATEGORY = 1;
 	public static final int LOCATION = 2;
@@ -59,5 +60,7 @@ public class Constants {
 	public static final String EXTRA_LOCATION_ID_TRAIL = "location_id_trail";
 	public static final String EXTRA_CATEGORY_ID_TRAIL = "category_id_trail";
 	public static final String EXTRA_ITEM = "item";
+	public static final String EXTRA_NFC_ID = "nfc_id";
+	public static final String EXTRA_NFC_IS_FREE = "nfc_is_free";
 	
 }

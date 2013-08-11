@@ -13,6 +13,7 @@ public class Item {
 	private long pdtUpdate;
 	private ArrayList<Category> categories;
 	private ArrayList<LocationQuantity> locations;
+	private Nfc nfc;
 	
 	/**********************************************
 	 * Constructor
@@ -24,6 +25,7 @@ public class Item {
 		this.setDesc("");
 		this.setPdtCreate(0);
 		this.setPdtUpdate(0);
+		this.setNfc(new Nfc());
 		
 		Category cat = new Category();
 		ArrayList<Category> cats = new ArrayList<Category>();
@@ -67,6 +69,10 @@ public class Item {
 	public void setLocations(ArrayList<LocationQuantity> locations) {
 		this.locations = locations;
 	}
+	
+	public void setNfc(Nfc nfc){
+		this.nfc = nfc;
+	}
 
 	/**********************************************
 	 * Setters
@@ -107,6 +113,10 @@ public class Item {
 	public ArrayList<LocationQuantity> getLocations() {
 		return locations;
 	}
+	
+	public Nfc getNfc(){
+		return this.nfc;
+	}
 
 	public long getTotalQuantity(){
 		long total = 0;
@@ -128,6 +138,14 @@ public class Item {
 		return locations;
 	}
 	
+	public boolean hasNfc(){
+		if(this.getNfc().exists()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**********************************************
 	 * Add
 	 *********************************************/
@@ -145,13 +163,17 @@ public class Item {
 		this.categories.add(category);
 	}
 	
-	/**********************************************
-	 * General
-	 *********************************************/
-	
 	@Override
 	public String toString() {
-		return "Item [getId()=" + getId() + ", getTitle()=" + getTitle() + ", getDesc()=" + getDesc() + ", getPdtCreate()=" + getPdtCreate() + ", getPdtUpdate()=" + getPdtUpdate() + ", getCategories()=" + getCategories().toString() + ", getLocations()=" + getLocations().toString() + "]";
+		return "Item [getId()=" + getId() + ", getTitle()=" + getTitle()
+				+ ", getDesc()=" + getDesc() + ", getPdtCreate()="
+				+ getPdtCreate() + ", getCreateFormatted()="
+				+ getCreateFormatted() + ", getPdtUpdate()=" + getPdtUpdate()
+				+ ", getUpdateFormatted()=" + getUpdateFormatted()
+				+ ", getCategories()=" + getCategories() + ", getLocations()="
+				+ getLocations() + ", getNfc()=" + getNfc()
+				+ ", getTotalQuantity()=" + getTotalQuantity()
+				+ ", getLocationTitles()=" + getLocationTitles() + "]";
 	}
 	
 	

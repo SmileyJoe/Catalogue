@@ -27,8 +27,8 @@
     <string name="toast_invalid_category_title">Please enter a title</string>
     <string name="toast_invalid_location_title">Please enter a title</string>
     
-    <string name="root_category_title">Categories</string>
-    <string name="root_location_title">Locations</string>
+    <string name="root_category_title">All</string>
+    <string name="root_location_title">All</string>
     
     <string name="title_categories">Categories</string>
     <string name="title_locations">Locations</string>
@@ -39,6 +39,7 @@
     <string name="title_category_selector">Choose</string>
     <string name="title_location_selector">Choose</string>
     <string name="title_search">Search</string>
+    <string name="title_read_nfc_activity">NFC</string>
     
     <string name="tv_num_cat_children_title">No. Sub-Categories: </string>
     <string name="tv_num_items_title">No. Items: </string>
@@ -48,6 +49,9 @@
     <string name="tv_item_list_title">Items</string>
     <string name="tv_item_add_title">Item Add</string>
     <string name="tv_search_title">Search</string>
+    <string name="tv_item_nfc_title">NFC</string>
+    
+    <string name="bt_item_add_nfc">Add NFC</string>
     
     <string name="tv_item_title_title">Title:</string>
     <string name="tv_item_description_title">Description:</string>
@@ -111,4 +115,11 @@
     <string name="tv_popup_delete_item">Are you sure you want to delete this item?</string>
     
     <string name="bar_title_delete">Delete?</string>
+    
+    <string name="tv_tag_exists_warning">WARNING! This tag is associated to something already, if you procedd it will be removed from its previous association.</string>
+    <string name="tv_details_title">Details:</string>
+    
+    <string name="tv_type_title_item">Item</string>
+    <string name="tv_type_title_category">Category</string>
+    <string name="tv_type_title_location">Location</string>
 </resources>

@@ -2,13 +2,16 @@ package com.smileyjoedev.catalogue;
 
 import android.content.Context;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.smileyjoedev.genLibrary.Debug;
+import com.actionbarsherlock.app.ActionBar;
 import com.smileyjoedev.genLibrary.GeneralViews;
 
 public class GenViews extends GeneralViews {
@@ -47,7 +50,7 @@ public class GenViews extends GeneralViews {
 	}
 	
 	public static void itemViewCategory(Context context, LinearLayout wrapper, Item item){
-    	wrapper.removeAllViews();
+		wrapper.removeAllViews();
     	
     	for(int i = 0; i < item.getCategories().size(); i++){
     		if(!item.getCategories().get(i).getTitle().equals("")){
@@ -68,14 +71,23 @@ public class GenViews extends GeneralViews {
 		    	    }
 		    	};
 		    	handler.postDelayed(r, 100L);
-				wrapper.addView(view);
+		    	
+	    		wrapper.addView(view);
     		}
 		}
     	
 	}
 	
-	public static void itemEditCategory(Context context, LinearLayout wrapper, Item item){
-		GenViews.itemViewCategory(context, wrapper, item);
+	public static void createBreadCrumbActionBar(Context context, ActionBar bar){
+		bar.setDisplayHomeAsUpEnabled(true);
+		bar.setDisplayShowCustomEnabled(true);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.xml.actionbar_horizontal_scroll, null);
+		ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT);
+		lp.gravity = Gravity.CENTER_VERTICAL;
+		view.setLayoutParams(lp);
+		bar.setDisplayShowTitleEnabled(false);
+		bar.setCustomView(view);
 	}
 
 }

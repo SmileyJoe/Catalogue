@@ -12,6 +12,7 @@ public class Location {
 	private long numChildren;
 	private long numItems;
 	private String breadCrumb;
+	private Nfc nfc;
 	
 	/**********************************************
 	 * Constructor
@@ -24,6 +25,7 @@ public class Location {
 		this.setNumChildren(0);
 		this.setNumItems(0);
 		this.setBreadCrumb("");
+		this.setNfc(new Nfc());
 	}
 
 	/**********************************************
@@ -54,6 +56,10 @@ public class Location {
 		this.breadCrumb = breadCrumb;
 	}
 	
+	public void setNfc(Nfc nfc){
+		this.nfc = nfc;
+	}
+	
 	/**********************************************
 	 * Getters
 	 *********************************************/
@@ -78,6 +84,10 @@ public class Location {
 		return this.numItems;
 	}
 	
+	public Nfc getNfc(){
+		return this.nfc;
+	}
+	
 	public String getBreadCrumb(Context context){
 		if(this.breadCrumb.equals("")){
 			DbLocationAdapter adapter = new DbLocationAdapter(context);
@@ -91,6 +101,14 @@ public class Location {
 			}
 		}
 		return this.breadCrumb;
+	}
+	
+	public boolean hasNfc(){
+		if(this.getNfc().exists()){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

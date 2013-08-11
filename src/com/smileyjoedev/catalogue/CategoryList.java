@@ -1,27 +1,21 @@
 package com.smileyjoedev.catalogue;
 
-import java.util.ArrayList;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.smileyjoedev.genLibrary.Debug;
-import com.smileyjoedev.genLibrary.Notify;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.widget.RelativeLayout;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.smileyjoedev.genLibrary.Debug;
 
 public class CategoryList extends SherlockFragmentActivity implements CategoryDataInterface {
 
@@ -43,17 +37,18 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
         	} catch(NullPointerException e){
         		e.printStackTrace();
         	}
-        	
+        
+        	updateBreadCrumb();
         	
         	Debug.d(categoryId);
         }
     };
-	
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        GenViews.createBreadCrumbActionBar(this, getSupportActionBar());
         
         try{
         	Bundle extras = getIntent().getExtras();
@@ -117,6 +112,7 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 	  	newTab1.setTag(Constants.TAB_ITEM);
 	  	getSupportActionBar().addTab(newTab0);
 	  	getSupportActionBar().addTab(newTab1);
+	  	
 	}
 
 	@Override
@@ -152,7 +148,7 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
         IntentFilter categoryChangedFilter = new IntentFilter();
         categoryChangedFilter.addAction(Broadcast.CATEGORY_CHANGED);
         registerReceiver(this.categoryChanged, categoryChangedFilter);
-
+        this.updateBreadCrumb();
         super.onResume();
     }
 
@@ -195,6 +191,14 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
     	if(!getCategoryFragment().showPreviousCategory()){
     		super.onBackPressed();
     	}
+    }
+    
+    private void updateBreadCrumb(){
+    	try{
+    		getCategoryFragment().updateBreadCrumbView((HorizontalScrollView) findViewById(R.id.hsv_actionbar_breadcrumb));
+    	} catch(NullPointerException e) {
+    		e.printStackTrace();
+    	}    	
     }
 
 }

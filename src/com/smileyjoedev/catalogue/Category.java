@@ -12,6 +12,7 @@ public class Category {
 	private long numChildren;
 	private long numItems;
 	private String breadCrumb;
+	private Nfc nfc;
 
 	/**********************************************
 	 * Constructor
@@ -24,6 +25,7 @@ public class Category {
 		this.setNumChildren(0);
 		this.setNumItems(0);
 		this.setBreadCrumb("");
+		this.setNfc(new Nfc());
 	}
 
 	/**********************************************
@@ -54,6 +56,10 @@ public class Category {
 		this.breadCrumb = breadCrumb;
 	}
 	
+	public void setNfc(Nfc nfc){
+		this.nfc = nfc;
+	}
+	
 	/**********************************************
 	 * Getters
 	 *********************************************/
@@ -78,6 +84,10 @@ public class Category {
 		return this.numItems;
 	}
 	
+	public Nfc getNfc(){
+		return this.nfc;
+	}
+	
 	public String getBreadCrumb(Context context){
 		if(this.breadCrumb.equals("")){
 			DbCategoryAdapter adapter = new DbCategoryAdapter(context);
@@ -91,6 +101,14 @@ public class Category {
 			}
 		}
 		return this.breadCrumb;
+	}
+	
+	public boolean hasNfc(){
+		if(this.getNfc().exists()){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

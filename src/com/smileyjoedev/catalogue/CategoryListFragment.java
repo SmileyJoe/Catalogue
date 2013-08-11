@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,7 +18,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -248,7 +248,8 @@ public class CategoryListFragment extends SherlockListFragment{
     	TextView tv  = new TextView(this.context);
 		tv.setTag(category.getId());
 		tv.setOnClickListener(this.breadCrumbClickListener);
-    	tv.setTextSize(20);		
+    	tv.setTextSize(20);	
+    	tv.setTextColor(this.context.getResources().getColor(R.color.white));
     	if(category.getId() == 0){
     		tv.setText(this.getText(R.string.root_category_title).toString());
     	} else {

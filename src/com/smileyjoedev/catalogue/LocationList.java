@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 
 public class LocationList extends SherlockFragmentActivity implements LocationDataInterface {
@@ -44,6 +45,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
         		e.printStackTrace();
         	}
         	
+        	updateBreadCrumb();
         	
         	Debug.d(locationId);
         }
@@ -53,7 +55,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.location_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        GenViews.createBreadCrumbActionBar(this, getSupportActionBar());
         
         try{
         	Bundle extras = getIntent().getExtras();
@@ -151,7 +153,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
         IntentFilter locationChangedFilter = new IntentFilter();
         locationChangedFilter.addAction(Broadcast.LOCATION_CHANGED);
         registerReceiver(this.locationChanged, locationChangedFilter);
-
+        this.updateBreadCrumb();
         super.onResume();
     }
 
@@ -197,4 +199,11 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
     	}
     }
 
+    private void updateBreadCrumb(){
+    	try{
+    		getLocationFragment().updateBreadCrumbView((HorizontalScrollView) findViewById(R.id.hsv_actionbar_breadcrumb));
+    	} catch(NullPointerException e) {
+    		e.printStackTrace();
+    	}    	
+    }
 }

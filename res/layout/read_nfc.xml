@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_nfc_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+    </TextView>
+    
+    <LinearLayout
+        android:id="@+id/ll_tag_db_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_tag_exists_warning">
+        </TextView>
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_details_title">
+        </TextView>
+        
+        <TextView
+            android:id="@+id/tv_rel_type_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        
+        <TextView
+            android:id="@+id/tv_rel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        
+        <HorizontalScrollView 
+		    android:id="@+id/hsv_breadcrumb"
+		    android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:scrollbars="none">
+			<TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="0dp"
+		        android:id="@+id/tv_breadcrumb">
+			</TextView>	
+		</HorizontalScrollView>
+    </LinearLayout>
+    
+	<LinearLayout
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:orientation="horizontal"
+	    android:id="@+id/ll_controls"
+	    android:weightSum="1.0">
+	  	<Button 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/bt_save"
+	        android:text="@string/bt_save"
+	        android:layout_weight="0.5">
+	    </Button>
+	    <Button 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/bt_cancel"
+	        android:text="@string/bt_cancel"
+	        android:layout_weight="0.5">
+	    </Button>
+	</LinearLayout>
+</LinearLayout>

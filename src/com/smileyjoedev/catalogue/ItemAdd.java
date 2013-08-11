@@ -3,9 +3,12 @@ package com.smileyjoedev.catalogue;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +46,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	private Button btSave;
 	private Button btCancel;
 	private Button btTakePhoto;
+	private Button btAddNfcTag;
+	private TextView tvNfcId;
 	private ImageView ivItemPhoto;
 	private LinearLayout llItemCategories;
 	private LinearLayout llItemLocations;
@@ -50,6 +56,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	private GeneralViews genViews;
 //	private ArrayList<EditText> etsLocQuan;
 	private Camera camera;
+	private TextView tvTagExistsWarning;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
         		this.item = this.itemAdapter.getDetails(extras.getLong("item_id"));
         		this.edit = true;
         		this.camera.setName(Long.toString(this.item.getId()));
+        		Debug.i(this.item);
         	} else {
         		
         	}
@@ -138,6 +146,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.btCancel.setOnClickListener(this);
     	this.btTakePhoto = (Button) findViewById(R.id.bt_take_photo);
     	this.btTakePhoto.setOnClickListener(this);
+    	this.btAddNfcTag = (Button) findViewById(R.id.bt_add_nfc_id);
+    	this.btAddNfcTag.setOnClickListener(this);
     	
     	this.ivItemPhoto = (ImageView) findViewById(R.id.iv_photo);
     	
@@ -146,6 +156,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	
     	this.tvItemQuantity = (TextView) findViewById(R.id.tv_item_quantity);
     	
+    	this.tvNfcId = (TextView) findViewById(R.id.tv_nfc_id);
+    	
     	this.genViews = new GeneralViews(this);
     	
 //    	this.etsLocQuan = new ArrayList<EditText>();
@@ -153,6 +165,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.camera = new Camera(Constants.PHOTO_PATH);
     	
     	this.totalQuantity = 0;
+    	
+    	this.tvTagExistsWarning = (TextView) findViewById(R.id.tv_nfc_tag_exists_warning);
+    	
     }
     
     @Override
@@ -181,6 +196,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	Debug.d("populateView");
     	this.etTitle.setText(this.item.getTitle());
     	this.etDescription.setText(this.item.getDesc());
+    	this.tvNfcId.setText(this.item.getNfc().getTagId());
     	
     	if(this.camera.isPhotoExists()){
     		this.camera.showPhoto(this.ivItemPhoto);
@@ -193,7 +209,42 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     public void populateCategories(){
     	Debug.d("populateCategories");
     	
-    	GenViews.itemEditCategory(this, this.llItemCategories, this.item);
+    	this.llItemCategories.removeAllViews();
+    	
+    	for(int i = 0; i < this.item.getCategories().size(); i++){
+    		if(!this.item.getCategories().get(i).getTitle().equals("")){
+    			final int position = i;
+				
+				LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View view = inflater.inflate(R.xml.item_edit_category_row, null);
+				
+				TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
+				final HorizontalScrollView hsvBreadcrumb = (HorizontalScrollView) view.findViewById(R.id.hsv_breadcrumb);
+				ImageView ivCategoryDelete = (ImageView) view.findViewById(R.id.iv_category_delete);
+				
+				tvTitle.setText(this.item.getCategories().get(i).getBreadCrumb(this));
+				
+				Handler handler = new Handler();
+		    	Runnable r = new Runnable(){
+		    	    public void run(){
+		    	    	hsvBreadcrumb.fullScroll(HorizontalScrollView.FOCUS_RIGHT);                      
+		    	    }
+		    	};
+		    	handler.postDelayed(r, 100L);
+		    	
+	    		ivCategoryDelete.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						item.getCategories().remove(position);
+						populateCategories();
+					}
+					
+				});
+		    	
+	    		this.llItemCategories.addView(view);
+    		}
+		}
     	
     }
     
@@ -214,10 +265,30 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 				
 				TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
 				EditText etQuan = (EditText) view.findViewById(R.id.et_quantity);
+				ImageView ivCategoryDelete = (ImageView) view.findViewById(R.id.iv_category_delete);
+				final HorizontalScrollView hsvBreadcrumb = (HorizontalScrollView) view.findViewById(R.id.hsv_breadcrumb);
 				
-				tvTitle.setText(this.item.getLocations().get(i).getLocation().getTitle());
+				tvTitle.setText(this.item.getLocations().get(i).getLocation().getBreadCrumb(this));
 				Debug.d("Quantity", this.item.getLocations().get(i).getQuantity());
 				etQuan.setText(Long.toString(this.item.getLocations().get(i).getQuantity()));
+				
+				ivCategoryDelete.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						item.getLocations().remove(position);
+						populateLocations();
+					}
+					
+				});
+				
+				Handler handler = new Handler();
+		    	Runnable r = new Runnable(){
+		    	    public void run(){
+		    	    	hsvBreadcrumb.fullScroll(HorizontalScrollView.FOCUS_RIGHT);                      
+		    	    }
+		    	};
+		    	handler.postDelayed(r, 100L);
 				
 				etQuan.addTextChangedListener(new TextWatcher() {
 					
@@ -315,6 +386,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 			case R.id.bt_take_photo:
 				startActivityForResult(this.camera.startCamera(), Constants.ACTIVITY_TAKE_PHOTO);
 				break;
+			case R.id.bt_add_nfc_id:
+				startActivityForResult(Intents.readNfc(this), Constants.ACTIVITY_READ_NFC);
+				break;
 		}
 	}
 
@@ -344,6 +418,25 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 			case Constants.ACTIVITY_TAKE_PHOTO:
 				this.camera.savePhoto(data.getExtras());
 				this.camera.showTempPhoto(this.ivItemPhoto);
+				break;
+			case Constants.ACTIVITY_READ_NFC:
+				if(resultCode == Activity.RESULT_OK){
+					if(data.hasExtra(Constants.EXTRA_NFC_ID)){
+						String nfcId = data.getStringExtra(Constants.EXTRA_NFC_ID);
+						boolean isFree = data.getBooleanExtra(Constants.EXTRA_NFC_IS_FREE, true);
+						this.tvNfcId.setText(nfcId);
+						
+						if(!isFree){
+							DbNfcAdapter nfcAdapter = new DbNfcAdapter(this);
+							this.item.setNfc(nfcAdapter.getDetailsByTagId(nfcId));
+							this.tvTagExistsWarning.setVisibility(View.VISIBLE);
+						} else {
+							this.item.getNfc().setTagId(nfcId);
+							this.tvTagExistsWarning.setVisibility(View.GONE);
+						}
+						Debug.d("Activity result nfc id", nfcId);
+					}
+				}
 				break;
 		}
 	}

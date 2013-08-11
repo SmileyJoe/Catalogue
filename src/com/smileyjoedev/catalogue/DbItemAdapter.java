@@ -28,6 +28,7 @@ public class DbItemAdapter {
 	private int pdtUpdateCol;
 	private DbLocationAdapter locationAdapter;
 	private DbCategoryAdapter categoryAdapter;
+	private DbNfcAdapter nfcAdapter;
 	
 	/*****************************************
 	 * CONSTRUCTOR
@@ -39,6 +40,7 @@ public class DbItemAdapter {
 		this.db = dbHelper.getWritableDatabase();
 		this.locationAdapter = new DbLocationAdapter(context);
 		this.categoryAdapter = new DbCategoryAdapter(context);
+		this.nfcAdapter = new DbNfcAdapter(context);
 	}
 	
 	/******************************************
@@ -91,6 +93,7 @@ public class DbItemAdapter {
 		dbId = db.insert("item", null, values);
 		camera.renamePhoto(Long.toString(dbId));
 		if(dbId > 0){
+			item.setId(dbId);
 			for(int i = 0; i < item.getLocations().size(); i++){
 				if(item.getLocations().get(i).getLocation().getId() != 0){
 					this.locationAdapter.saveItemRel(item.getLocations().get(i).getLocation().getId(), dbId, item.getLocations().get(i).getQuantity());
@@ -101,12 +104,22 @@ public class DbItemAdapter {
 					this.categoryAdapter.saveItemRel(item.getCategories().get(i).getId(), dbId);
 				}
 			}
+			
+			this.saveNfc(item);
 			Notify.toast(this.context, R.string.toast_item_saved, item.getTitle());
 		} else {
 			Notify.toast(this.context, R.string.toast_item_saved_error, item.getTitle());
 		}
 		
 		return dbId;
+	}
+	
+	private void saveNfc(Item item){
+		if(item.hasNfc()){
+			item.getNfc().setRelId(item.getId());
+			item.getNfc().setRelTypeId(Constants.ITEM);
+			this.nfcAdapter.save(item.getNfc());
+		}
 	}
 	
 	/******************************************
@@ -126,6 +139,7 @@ public class DbItemAdapter {
 		
 		this.locationAdapter.deleteItemRel(item.getId());
 		this.categoryAdapter.deleteItemRel(item.getId());
+		this.nfcAdapter.delete(item.getNfc());
 		
 		for(int i = 0; i < item.getLocations().size(); i++){
 			this.locationAdapter.saveItemRel(item.getLocations().get(i).getLocation().getId(), item.getId(), item.getLocations().get(i).getQuantity());
@@ -133,6 +147,8 @@ public class DbItemAdapter {
 		for(int i = 0; i < item.getCategories().size(); i++){
 			this.categoryAdapter.saveItemRel(item.getCategories().get(i).getId(), item.getId());
 		}
+		
+		this.saveNfc(item);
 		
 		Notify.toast(this.context, R.string.toast_item_updated, item.getTitle());
 	}
@@ -148,7 +164,16 @@ public class DbItemAdapter {
 		camera.deletePhoto();
 		this.locationAdapter.deleteItemRel(item.getId());
 		this.categoryAdapter.deleteItemRel(item.getId());
+		this.nfcAdapter.delete(item.getNfc());
 		Notify.toast(this.context, R.string.toast_item_deleted, item.getTitle());
+	}
+	
+	public void deleteRelCategory(long itemId, long categoryId){
+		this.categoryAdapter.deleteItemRel(itemId, categoryId);
+	}
+	
+	public void deleteRelLocation(long itemId, long locationId){
+		this.locationAdapter.deleteItemRel(itemId, locationId);
 	}
 	
 	/******************************************
@@ -220,6 +245,7 @@ public class DbItemAdapter {
 		item.setPdtUpdate(this.cursor.getLong(this.pdtUpdateCol));
 		item.setLocations(this.locationAdapter.getForItem(item.getId()));
 		item.setCategories(this.categoryAdapter.getForItem(item.getId()));
+		item.setNfc(this.nfcAdapter.getDetailsByRel(item.getId(), Constants.ITEM));
 		
 		return item;
 	}

@@ -250,6 +250,7 @@ public class LocationListFragment extends SherlockListFragment{
 		tv.setTag(location.getId());
 		tv.setOnClickListener(this.breadCrumbClickListener);
     	tv.setTextSize(20);		
+    	tv.setTextColor(this.context.getResources().getColor(R.color.white));
     	if(location.getId() == 0){
     		tv.setText(this.getText(R.string.root_location_title).toString());
     	} else {

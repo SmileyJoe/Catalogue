@@ -97,6 +97,31 @@
 		        android:id="@+id/bt_add_location"
 		        android:text="@string/bt_item_add_location">
 		    </Button>
+		    
+		  	<TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/tv_item_nfc_title"
+		        style="@style/heading_two">
+		    </TextView>
+		  	<TextView
+		  	    android:id="@+id/tv_nfc_id" 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content">
+		    </TextView>
+            <TextView
+                android:id="@+id/tv_nfc_tag_exists_warning"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/tv_tag_exists_warning"
+	            android:visibility="gone">
+	        </TextView>
+		  	<Button 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:id="@+id/bt_add_nfc_id"
+		        android:text="@string/bt_item_add_nfc">
+		    </Button>
 		</LinearLayout>
 		<LinearLayout
 		    android:layout_height="wrap_content"

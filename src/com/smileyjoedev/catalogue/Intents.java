@@ -30,6 +30,11 @@ public class Intents {
 		return intent;
 	}
 	
+	public static Intent readNfc(Context context){
+		Intent intent = new Intent(context, ReadNfcActivity.class);
+		return intent;
+	}
+	
 	public static Intent locationList(Context context, long locationId){
 		Intent intent = new Intent(context, LocationList.class);
 		
@@ -185,6 +190,22 @@ public class Intents {
 		extras.putString("negative_text", negativeText);
 		intent.putExtras(extras);
 		
+		return intent;
+	}
+	
+	public static Intent fromNfc(Context context, Nfc nfc){
+		Intent intent = new Intent();
+		switch(nfc.getRelTypeId()){
+			case Constants.ITEM:
+				intent = Intents.itemView(context, nfc.getRelId());
+				break;
+			case Constants.LOCATION:
+				intent = Intents.locationList(context, nfc.getRelId());
+				break;
+			case Constants.CATEGORY:
+				intent = Intents.categoryList(context, nfc.getRelId());
+				break;
+		}
 		return intent;
 	}
 	
