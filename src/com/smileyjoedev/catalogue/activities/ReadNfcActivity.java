@@ -13,13 +13,9 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.smileyjoedev.catalogue.Broadcast;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.string;
 import com.smileyjoedev.catalogue.db.DbCategoryAdapter;
 import com.smileyjoedev.catalogue.db.DbItemAdapter;
 import com.smileyjoedev.catalogue.db.DbLocationAdapter;
@@ -30,7 +26,7 @@ import com.smileyjoedev.catalogue.objects.Location;
 import com.smileyjoedev.catalogue.objects.Nfc;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class ReadNfcActivity extends SherlockActivity implements OnClickListener {
+public class ReadNfcActivity extends Activity implements OnClickListener {
 
 	private Button btSave;
 	private Button btCancel;

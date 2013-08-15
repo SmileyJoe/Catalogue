@@ -1,42 +1,29 @@
 package com.smileyjoedev.catalogue.activities;
 
-import java.util.ArrayList;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.smileyjoedev.catalogue.Broadcast;
-import com.smileyjoedev.catalogue.Constants;
-import com.smileyjoedev.catalogue.GenViews;
-import com.smileyjoedev.catalogue.Intents;
-import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.TabListener;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
-import com.smileyjoedev.catalogue.fragments.ItemListFragment;
-import com.smileyjoedev.catalogue.fragments.LocationListFragment;
-import com.smileyjoedev.catalogue.interfaces.LocationDataInterface;
-import com.smileyjoedev.genLibrary.Debug;
-import com.smileyjoedev.genLibrary.Notify;
-
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
-import android.widget.RelativeLayout;
 
-public class LocationList extends SherlockFragmentActivity implements LocationDataInterface {
+import com.smileyjoedev.catalogue.Broadcast;
+import com.smileyjoedev.catalogue.Constants;
+import com.smileyjoedev.catalogue.GenViews;
+import com.smileyjoedev.catalogue.Intents;
+import com.smileyjoedev.catalogue.R;
+import com.smileyjoedev.catalogue.TabListener;
+import com.smileyjoedev.catalogue.fragments.ItemListFragment;
+import com.smileyjoedev.catalogue.fragments.LocationListFragment;
+import com.smileyjoedev.catalogue.interfaces.LocationDataInterface;
+import com.smileyjoedev.genLibrary.Debug;
+
+public class LocationList extends Activity implements LocationDataInterface {
 
 	private long locationId = 0;
 	
@@ -46,9 +33,9 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
         public void onReceive(Context context, Intent intent) {
         	locationId = intent.getLongExtra(Constants.EXTRA_LOCATION_ID, 0);
         	if(locationId == 0){
-        		getSupportActionBar().getTabAt(0).setText("Locations");
+        		getActionBar().getTabAt(0).setText("Locations");
         	} else {
-        		getSupportActionBar().getTabAt(0).setText("Sub-Locations");
+        		getActionBar().getTabAt(0).setText("Sub-Locations");
         	}
         	
         	try{
@@ -67,7 +54,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.location_list);
-        GenViews.createBreadCrumbActionBar(this, getSupportActionBar());
+        GenViews.createBreadCrumbActionBar(this, getActionBar());
         
         try{
         	Bundle extras = getIntent().getExtras();
@@ -89,7 +76,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.location_list, menu);
         
@@ -110,9 +97,9 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
     }
 	
 	public void setTabs(){
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
   	
-	  	ActionBar.Tab newTab0 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab0 = getActionBar().newTab();
 	  	if(this.locationId == 0){
 	  		newTab0.setText("Locations");
 	  	} else {
@@ -122,14 +109,14 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 	  	newTab0.setTabListener(new TabListener<LocationListFragment>(
                 this, Integer.toString(Constants.TAB_LOCATION), LocationListFragment.class, null));
 	  	newTab0.setTag(Constants.TAB_LOCATION);
-	  	ActionBar.Tab newTab1 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab1 = getActionBar().newTab();
 	  	newTab1.setText("Items");
 //	  	newTab1.setTabListener(this);
 	  	newTab1.setTabListener(new TabListener<ItemListFragment>(
                 this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
 	  	newTab1.setTag(Constants.TAB_ITEM);
-	  	getSupportActionBar().addTab(newTab0);
-	  	getSupportActionBar().addTab(newTab1);
+	  	getActionBar().addTab(newTab0);
+	  	getActionBar().addTab(newTab1);
 	}
 
 	@Override
@@ -144,7 +131,7 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
 		switch(requestCode){
 			case Constants.ACTIVITY_LOCATION_NEW:
 				if(resultCode == Activity.RESULT_OK){
-					ActionBar.Tab currentTab = getSupportActionBar().getSelectedTab();
+					ActionBar.Tab currentTab = getActionBar().getSelectedTab();
 					Debug.d();
 					Debug.d(currentTab.getText().toString());
 					
@@ -192,12 +179,12 @@ public class LocationList extends SherlockFragmentActivity implements LocationDa
     }
     
     private LocationListFragment getLocationFragment(){
-    	return (LocationListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_LOCATION));
+    	return (LocationListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_LOCATION));
     }
     
     private ItemListFragment getItemFragment() throws NullPointerException{
     	try{
-    		return (ItemListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
+    		return (ItemListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
     	} catch(NullPointerException e){
     		throw e;
     	}

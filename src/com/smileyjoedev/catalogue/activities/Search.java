@@ -1,30 +1,26 @@
 package com.smileyjoedev.catalogue.activities;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
-import com.actionbarsherlock.widget.SearchView;
-import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.R;
 import com.smileyjoedev.catalogue.TabListener;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.fragments.CategoryListFragment;
 import com.smileyjoedev.catalogue.fragments.ItemListFragment;
 import com.smileyjoedev.catalogue.fragments.LocationListFragment;
 import com.smileyjoedev.catalogue.interfaces.SearchDataInterface;
-import com.smileyjoedev.genLibrary.Debug;
 
-public class Search extends SherlockFragmentActivity implements SearchDataInterface{
+public class Search extends Activity implements SearchDataInterface{
 
 	private String searchTerm;
 	private SearchView etSearch;
@@ -53,7 +49,7 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         this.init();
         this.setTabs();
 	}
@@ -80,7 +76,7 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.search, menu);
        	
@@ -150,32 +146,32 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
     }
 	
 	public void setTabs(){
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
   	
-	  	ActionBar.Tab newTab0 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab0 = getActionBar().newTab();
   		newTab0.setText("Items");
 //	  	newTab0.setTabListener(this);
 	  	newTab0.setTabListener(new TabListener<ItemListFragment>(
                 this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
 	  	newTab0.setTag(Constants.TAB_ITEM);
 	  	
-	  	ActionBar.Tab newTab1 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab1 = getActionBar().newTab();
 	  	newTab1.setText("Categories");
 //	  	newTab1.setTabListener(this);
 	  	newTab1.setTabListener(new TabListener<CategoryListFragment>(
                 this, Integer.toString(Constants.TAB_CATEGORY), CategoryListFragment.class, null));
 	  	newTab1.setTag(Constants.TAB_ITEM);
 	  	
-	  	ActionBar.Tab newTab2 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab2 = getActionBar().newTab();
 	  	newTab2.setText("Locations");
 //	  	newTab1.setTabListener(this);
 	  	newTab2.setTabListener(new TabListener<LocationListFragment>(
                 this, Integer.toString(Constants.TAB_LOCATION), LocationListFragment.class, null));
 	  	newTab2.setTag(Constants.TAB_LOCATION);
 	  	
-	  	getSupportActionBar().addTab(newTab0);
-	  	getSupportActionBar().addTab(newTab1);
-	  	getSupportActionBar().addTab(newTab2);
+	  	getActionBar().addTab(newTab0);
+	  	getActionBar().addTab(newTab1);
+	  	getActionBar().addTab(newTab2);
 	}
 	
 	@Override
@@ -190,7 +186,7 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
 	
     private ItemListFragment getItemFragment() throws NullPointerException{
     	try{
-    		return (ItemListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
+    		return (ItemListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
     	} catch(NullPointerException e){
     		throw e;
     	}
@@ -199,7 +195,7 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
     
     private CategoryListFragment getCategoryFragment() throws NullPointerException{
     	try{
-    		return (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_CATEGORY));
+    		return (CategoryListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_CATEGORY));
     	} catch(NullPointerException e){
     		throw e;
     	}
@@ -208,7 +204,7 @@ public class Search extends SherlockFragmentActivity implements SearchDataInterf
     
     private LocationListFragment getLocationFragment() throws NullPointerException{
     	try{
-    		return (LocationListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_LOCATION));
+    		return (LocationListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_LOCATION));
     	} catch(NullPointerException e){
     		throw e;
     	}

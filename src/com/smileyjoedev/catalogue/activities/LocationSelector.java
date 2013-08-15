@@ -7,35 +7,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
 import com.smileyjoedev.catalogue.Views;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.db.DbLocationAdapter;
 import com.smileyjoedev.catalogue.fragments.LocationListFragment;
 import com.smileyjoedev.catalogue.interfaces.LocationDataInterface;
 import com.smileyjoedev.catalogue.objects.Location;
-import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.KeyBoard;
 
-public class LocationSelector extends SherlockFragmentActivity implements OnClickListener, LocationDataInterface {
+public class LocationSelector extends Activity implements OnClickListener, LocationDataInterface {
 	
 	private HorizontalScrollView hsvBreadCrumb;
 	private Button btSave;
@@ -66,7 +56,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_selector);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         KeyBoard.forceClose(getWindow());
 
         try{
@@ -172,7 +162,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
 	}
 	
 	private LocationListFragment getLocationListFragment(){
-		return (LocationListFragment) getSupportFragmentManager().findFragmentById(R.id.frag_location_list);
+		return (LocationListFragment) getFragmentManager().findFragmentById(R.id.frag_location_list);
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -204,7 +194,7 @@ public class LocationSelector extends SherlockFragmentActivity implements OnClic
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.location_selector, menu);
         

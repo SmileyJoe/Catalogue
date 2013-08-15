@@ -1,17 +1,16 @@
 package com.smileyjoedev.catalogue.activities;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,18 +20,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.gson.Gson;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
-import com.smileyjoedev.catalogue.R.xml;
 import com.smileyjoedev.catalogue.db.DbBarcodeAdapter;
 import com.smileyjoedev.catalogue.db.DbCategoryAdapter;
 import com.smileyjoedev.catalogue.db.DbItemAdapter;
@@ -50,7 +41,7 @@ import com.smileyjoedev.genLibrary.TimeStamp;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class ItemAdd extends SherlockActivity implements OnClickListener {
+public class ItemAdd extends Activity implements OnClickListener {
 	
 	private Item item;
 	private DbItemAdapter itemAdapter;
@@ -89,7 +80,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
         KeyBoard.forceClose(getWindow());
         this.restoreSavedInstance(savedInstanceState);
         this.initialize();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         try{
         	Bundle extras = getIntent().getExtras();
         	if(extras.containsKey("item_id")){
@@ -202,7 +193,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	Debug.d("onCreateOptionsMenu");
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.item_add, menu);
         

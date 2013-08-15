@@ -3,27 +3,21 @@ package com.smileyjoedev.catalogue.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.string;
 import com.smileyjoedev.catalogue.adapters.ItemListAdapter;
 import com.smileyjoedev.catalogue.db.DbItemAdapter;
 import com.smileyjoedev.catalogue.interfaces.CategoryDataInterface;
@@ -32,7 +26,7 @@ import com.smileyjoedev.catalogue.interfaces.SearchDataInterface;
 import com.smileyjoedev.catalogue.objects.Item;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class ItemListFragment extends SherlockListFragment{
+public class ItemListFragment extends ListFragment{
 
 	private ArrayList<Item> items;
 	private DbItemAdapter itemAdapter;

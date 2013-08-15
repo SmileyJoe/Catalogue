@@ -1,24 +1,21 @@
 package com.smileyjoedev.catalogue.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.fragments.ItemViewFragment;
 import com.smileyjoedev.catalogue.interfaces.ItemDataInterface;
 import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.KeyBoard;
 
-public class ItemView extends SherlockFragmentActivity implements ItemDataInterface {
+public class ItemView extends Activity implements ItemDataInterface {
 
 	private long itemId;
 	
@@ -30,7 +27,7 @@ public class ItemView extends SherlockFragmentActivity implements ItemDataInterf
         setContentView(R.layout.item_view);
         KeyBoard.forceClose(getWindow());
         this.restoreSavedInstance(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         this.populateView();
     }
     
@@ -81,7 +78,7 @@ public class ItemView extends SherlockFragmentActivity implements ItemDataInterf
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.item_view, menu);
         
@@ -124,7 +121,7 @@ public class ItemView extends SherlockFragmentActivity implements ItemDataInterf
 	
     private ItemViewFragment getItemFragment() throws NullPointerException{
     	try{
-    		return (ItemViewFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
+    		return (ItemViewFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
     	} catch(NullPointerException e){
     		throw e;
     	}

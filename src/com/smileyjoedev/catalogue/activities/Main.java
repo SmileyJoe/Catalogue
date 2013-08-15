@@ -1,14 +1,20 @@
-package com.smileyjoedev.catalogue;
+package com.smileyjoedev.catalogue.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
+import com.smileyjoedev.catalogue.Constants;
+import com.smileyjoedev.catalogue.Intents;
+import com.smileyjoedev.catalogue.R;
+import com.smileyjoedev.catalogue.R.id;
+import com.smileyjoedev.catalogue.R.layout;
+import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.db.DbBarcodeAdapter;
 import com.smileyjoedev.catalogue.db.DbCategoryAdapter;
 import com.smileyjoedev.catalogue.db.DbItemAdapter;
@@ -21,7 +27,7 @@ import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class Main extends SherlockActivity implements OnClickListener {
+public class Main extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +38,7 @@ public class Main extends SherlockActivity implements OnClickListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 	}

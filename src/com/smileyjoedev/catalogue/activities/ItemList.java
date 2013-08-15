@@ -3,28 +3,22 @@ package com.smileyjoedev.catalogue.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.fragments.ItemListFragment;
-import com.smileyjoedev.genLibrary.Debug;
 
-public class ItemList extends SherlockFragmentActivity {
+public class ItemList extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         this.init();
 	}
 	
@@ -34,7 +28,7 @@ public class ItemList extends SherlockFragmentActivity {
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.item_list, menu);
         
@@ -70,7 +64,7 @@ public class ItemList extends SherlockFragmentActivity {
 	}
 	
 	private ItemListFragment getItemListFragment(){
-		return (ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.frag_item_list);
+		return (ItemListFragment) getFragmentManager().findFragmentById(R.id.frag_item_list);
 	}
 	
 }

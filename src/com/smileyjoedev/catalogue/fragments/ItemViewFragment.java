@@ -1,32 +1,26 @@
 package com.smileyjoedev.catalogue.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.GenViews;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
 import com.smileyjoedev.catalogue.db.DbItemAdapter;
 import com.smileyjoedev.catalogue.interfaces.ItemDataInterface;
 import com.smileyjoedev.catalogue.objects.Item;
 import com.smileyjoedev.genLibrary.Camera;
 import com.smileyjoedev.genLibrary.Debug;
-import com.smileyjoedev.genLibrary.GeneralViews;
 
-public class ItemViewFragment extends SherlockFragment {
+public class ItemViewFragment extends Fragment {
 
 	private Item item;
 	private DbItemAdapter itemAdapter;

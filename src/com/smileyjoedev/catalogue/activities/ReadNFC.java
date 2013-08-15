@@ -2,21 +2,19 @@ package com.smileyjoedev.catalogue.activities;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.smileyjoedev.catalogue.Broadcast;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.db.DbNfcAdapter;
 import com.smileyjoedev.catalogue.objects.Nfc;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class ReadNFC extends SherlockActivity {
+public class ReadNFC extends Activity {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

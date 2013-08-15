@@ -1,35 +1,29 @@
 package com.smileyjoedev.catalogue.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.smileyjoedev.catalogue.Broadcast;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.GenViews;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
 import com.smileyjoedev.catalogue.TabListener;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.menu;
 import com.smileyjoedev.catalogue.fragments.CategoryListFragment;
 import com.smileyjoedev.catalogue.fragments.ItemListFragment;
 import com.smileyjoedev.catalogue.interfaces.CategoryDataInterface;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class CategoryList extends SherlockFragmentActivity implements CategoryDataInterface {
+public class CategoryList extends Activity implements CategoryDataInterface {
 
 	private long categoryId = 0;
 	
@@ -39,9 +33,9 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
         public void onReceive(Context context, Intent intent) {
         	categoryId = intent.getLongExtra(Constants.EXTRA_CATEGORY_ID, 0);
         	if(categoryId == 0){
-        		getSupportActionBar().getTabAt(0).setText("Categories");
+        		getActionBar().getTabAt(0).setText("Categories");
         	} else {
-        		getSupportActionBar().getTabAt(0).setText("Sub-Categories");
+        		getActionBar().getTabAt(0).setText("Sub-Categories");
         	}
         	
         	try{
@@ -60,7 +54,7 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
-        GenViews.createBreadCrumbActionBar(this, getSupportActionBar());
+        GenViews.createBreadCrumbActionBar(this, getActionBar());
         
         try{
         	Bundle extras = getIntent().getExtras();
@@ -82,7 +76,7 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         
        	inflater.inflate(R.menu.category_list, menu);
         
@@ -104,9 +98,9 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
     }
 	
 	public void setTabs(){
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
   	
-	  	ActionBar.Tab newTab0 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab0 = getActionBar().newTab();
 	  	if(this.categoryId == 0){
 	  		newTab0.setText("Categories");
 	  	} else {
@@ -116,14 +110,14 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 	  	newTab0.setTabListener(new TabListener<CategoryListFragment>(
                 this, Integer.toString(Constants.TAB_CATEGORY), CategoryListFragment.class, null));
 	  	newTab0.setTag(Constants.TAB_CATEGORY);
-	  	ActionBar.Tab newTab1 = getSupportActionBar().newTab();
+	  	ActionBar.Tab newTab1 = getActionBar().newTab();
 	  	newTab1.setText("Items");
 //	  	newTab1.setTabListener(this);
 	  	newTab1.setTabListener(new TabListener<ItemListFragment>(
                 this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
 	  	newTab1.setTag(Constants.TAB_ITEM);
-	  	getSupportActionBar().addTab(newTab0);
-	  	getSupportActionBar().addTab(newTab1);
+	  	getActionBar().addTab(newTab0);
+	  	getActionBar().addTab(newTab1);
 	  	
 	}
 
@@ -139,7 +133,7 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
 		switch(requestCode){
 			case Constants.ACTIVITY_CATEGORY_NEW:
 				if(resultCode == Activity.RESULT_OK){
-					ActionBar.Tab currentTab = getSupportActionBar().getSelectedTab();
+					ActionBar.Tab currentTab = getActionBar().getSelectedTab();
 					Debug.d();
 					Debug.d(currentTab.getText().toString());
 					
@@ -186,12 +180,12 @@ public class CategoryList extends SherlockFragmentActivity implements CategoryDa
     }
     
     private CategoryListFragment getCategoryFragment(){
-    	return (CategoryListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_CATEGORY));
+    	return (CategoryListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_CATEGORY));
     }
     
     private ItemListFragment getItemFragment() throws NullPointerException{
     	try{
-    		return (ItemListFragment) getSupportFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
+    		return (ItemListFragment) getFragmentManager().findFragmentByTag(Integer.toString(Constants.TAB_ITEM));
     	} catch(NullPointerException e){
     		throw e;
     	}

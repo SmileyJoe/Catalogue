@@ -1,17 +1,15 @@
 package com.smileyjoedev.catalogue;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.smileyjoedev.catalogue.objects.Item;
 import com.smileyjoedev.genLibrary.GeneralViews;
 

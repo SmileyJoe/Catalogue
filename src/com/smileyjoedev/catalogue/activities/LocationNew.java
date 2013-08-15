@@ -9,13 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.smileyjoedev.catalogue.Constants;
 import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
-import com.smileyjoedev.catalogue.R.id;
-import com.smileyjoedev.catalogue.R.layout;
-import com.smileyjoedev.catalogue.R.string;
 import com.smileyjoedev.catalogue.db.DbBarcodeAdapter;
 import com.smileyjoedev.catalogue.db.DbLocationAdapter;
 import com.smileyjoedev.catalogue.db.DbNfcAdapter;
@@ -26,7 +22,7 @@ import com.smileyjoedev.genLibrary.Notify;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class LocationNew extends SherlockActivity implements OnClickListener {
+public class LocationNew extends Activity implements OnClickListener {
 
 	private Button btSave;
 	private Button btCancel;
@@ -47,7 +43,7 @@ public class LocationNew extends SherlockActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.location_new);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         this.init();
         this.populateView();
 	}
