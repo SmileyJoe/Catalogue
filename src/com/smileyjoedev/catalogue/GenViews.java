@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.smileyjoedev.catalogue.objects.Item;
 import com.smileyjoedev.genLibrary.GeneralViews;
 
 public class GenViews extends GeneralViews {

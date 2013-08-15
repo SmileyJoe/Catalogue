@@ -2,6 +2,12 @@ package com.smileyjoedev.catalogue;
 
 import java.util.ArrayList;
 
+import com.smileyjoedev.catalogue.adapters.CategoryListAdapter;
+import com.smileyjoedev.catalogue.adapters.ItemListAdapter;
+import com.smileyjoedev.catalogue.adapters.LocationListAdapter;
+import com.smileyjoedev.catalogue.objects.Category;
+import com.smileyjoedev.catalogue.objects.Item;
+import com.smileyjoedev.catalogue.objects.Location;
 import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.Screen;
 

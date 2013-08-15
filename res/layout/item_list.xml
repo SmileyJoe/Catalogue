@@ -7,7 +7,7 @@
 	    android:id="@+id/frag_item_list"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-		class="com.smileyjoedev.catalogue.ItemListFragment">
+		class="com.smileyjoedev.catalogue.fragments.ItemListFragment">
 	    
 	</fragment>
     

@@ -9,7 +9,7 @@
         android:id="@+id/viewFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="com.smileyjoedev.catalogue.ItemViewFragment"
+        class="com.smileyjoedev.catalogue.fragments.ItemViewFragment"
         android:tag="2" ></fragment>
 
 </LinearLayout>

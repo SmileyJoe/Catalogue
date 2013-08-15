@@ -7,6 +7,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.smileyjoedev.catalogue.activities.CategoryList;
+import com.smileyjoedev.catalogue.activities.CategoryNew;
+import com.smileyjoedev.catalogue.activities.CategorySelector;
+import com.smileyjoedev.catalogue.activities.ItemAdd;
+import com.smileyjoedev.catalogue.activities.ItemList;
+import com.smileyjoedev.catalogue.activities.ItemView;
+import com.smileyjoedev.catalogue.activities.LocationList;
+import com.smileyjoedev.catalogue.activities.LocationNew;
+import com.smileyjoedev.catalogue.activities.LocationSelector;
+import com.smileyjoedev.catalogue.activities.ReadNfcActivity;
+import com.smileyjoedev.catalogue.activities.Search;
+import com.smileyjoedev.catalogue.objects.Nfc;
 import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 

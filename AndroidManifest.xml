@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".ReadNFC">
+            android:name="com.smileyjoedev.catalogue.activities.ReadNFC">
 			<intent-filter>
 			    <action android:name="android.nfc.action.TECH_DISCOVERED"/>
 			    <category android:name="android.intent.category.DEFAULT"/>
@@ -40,7 +40,7 @@
 			    android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
-            android:name=".CategoryList"
+            android:name="com.smileyjoedev.catalogue.activities.CategoryList"
             android:label="@string/title_categories" >
             
             <intent-filter>
@@ -48,54 +48,55 @@
 	        </intent-filter>
         </activity>
         <activity
-            android:name=".LocationList"
+            android:name="com.smileyjoedev.catalogue.activities.LocationList"
             android:label="@string/title_locations" >
             
             <intent-filter>
 	            <action android:name="com.smileyjoedev.catalogue.LOCATION_CHANGED"></action>
 	        </intent-filter>
         </activity>
-        <activity
-            android:name=".CategoryNew"
+        
+		<activity
+            android:name="com.smileyjoedev.catalogue.activities.CategoryNew"
             android:label="@string/title_category_new" >
         </activity>
         <activity
-            android:name=".LocationNew"
+            android:name="com.smileyjoedev.catalogue.activities.LocationNew"
             android:label="@string/title_category_new" >
         </activity>
         <activity
-            android:name=".ItemAdd"
+            android:name="com.smileyjoedev.catalogue.activities.ItemAdd"
             android:label="@string/title_item_add" >
         </activity>
         <activity
-            android:name=".ItemList"
+            android:name="com.smileyjoedev.catalogue.activities.ItemList"
             android:label="@string/title_item_list" >
         </activity>
         <activity
-            android:name=".ItemView"
+            android:name="com.smileyjoedev.catalogue.activities.ItemView"
             android:label="@string/title_item_view" >
         </activity>
         <activity
-            android:name=".ReadNfcActivity"
+            android:name="com.smileyjoedev.catalogue.activities.ReadNfcActivity"
             android:label="@string/title_read_nfc_activity"
 			android:theme="@style/Holo.Theme.Dialog" >
         </activity>
         <activity
-            android:name=".CategorySelector"
+            android:name="com.smileyjoedev.catalogue.activities.CategorySelector"
             android:label="@string/title_category_selector" >
             <intent-filter>
 	            <action android:name="com.smileyjoedev.catalogue.CATEGORY_CHANGED"></action>
 	        </intent-filter>
         </activity>
         <activity
-            android:name=".LocationSelector"
+            android:name="com.smileyjoedev.catalogue.activities.LocationSelector"
             android:label="@string/title_location_selector" >
             <intent-filter>
 	            <action android:name="com.smileyjoedev.catalogue.LOCATION_CHANGED"></action>
 	        </intent-filter>
         </activity>
         <activity
-            android:name=".Search"
+            android:name="com.smileyjoedev.catalogue.activities.Search"
             android:label="@string/title_search" >
         </activity>
   	   	<activity 
