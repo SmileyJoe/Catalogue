@@ -122,6 +122,38 @@
 		        android:id="@+id/bt_add_nfc_id"
 		        android:text="@string/bt_item_add_nfc">
 		    </Button>
+		    
+			<TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/tv_item_barcode_title"
+		        style="@style/heading_two">
+		    </TextView>
+		  	<TextView
+		  	    android:id="@+id/tv_barcode_id" 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content">
+		    </TextView>
+            <TextView
+                android:id="@+id/tv_barcode_exists_warning"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/tv_barcode_exists_warning"
+	            android:visibility="gone">
+	        </TextView>
+            <TextView
+                android:id="@+id/tv_barcode_not_found_warning"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/tv_barcode_not_found_warning"
+	            android:visibility="gone">
+	        </TextView>
+		  	<Button 
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:id="@+id/bt_add_barcode_id"
+		        android:text="@string/bt_item_add_barcode">
+		    </Button>
 		</LinearLayout>
 		<LinearLayout
 		    android:layout_height="wrap_content"

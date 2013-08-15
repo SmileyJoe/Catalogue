@@ -13,6 +13,7 @@ public class Db {
 	private static final String CREATE_ITEM_REL_CATEGORY = "CREATE TABLE item_rel_category(_id integer primary key autoincrement, category_id long not null, item_id long not null);";
 	private static final String CREATE_ITEM_REL_LOCATION = "CREATE TABLE item_rel_location(_id integer primary key autoincrement, item_id long not null, location_id long not null, item_quantity long not null);";
 	private static final String CREATE_NFC = "CREATE TABLE nfc (_id integer primary key autoincrement, nfc_tag_id text not null, rel_id long not null, rel_id_type int not null);";
+	private static final String CREATE_BARCODE = "CREATE TABLE barcode (_id integer primary key autoincrement, barcode_id text not null, rel_id long not null, rel_id_type int not null);";
 	
  	public static void onCreate(SQLiteDatabase database) {
 		database.execSQL(CREATE_ITEM);
@@ -21,11 +22,10 @@ public class Db {
 		database.execSQL(CREATE_ITEM_REL_CATEGORY);
 		database.execSQL(CREATE_ITEM_REL_LOCATION);
 		database.execSQL(CREATE_NFC);
+		database.execSQL(CREATE_BARCODE);
 	}
 	
 	public static void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-		database.execSQL("DROP TABLE nfc");
-		database.execSQL(CREATE_NFC);
 	}
 	
 }

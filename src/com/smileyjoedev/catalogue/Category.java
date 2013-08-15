@@ -13,6 +13,7 @@ public class Category {
 	private long numItems;
 	private String breadCrumb;
 	private Nfc nfc;
+	private Barcode barcode;
 
 	/**********************************************
 	 * Constructor
@@ -26,6 +27,7 @@ public class Category {
 		this.setNumItems(0);
 		this.setBreadCrumb("");
 		this.setNfc(new Nfc());
+		this.setBarcode(new Barcode());
 	}
 
 	/**********************************************
@@ -59,6 +61,10 @@ public class Category {
 	public void setNfc(Nfc nfc){
 		this.nfc = nfc;
 	}
+
+	public void setBarcode(Barcode barcode){
+		this.barcode = barcode;
+	}
 	
 	/**********************************************
 	 * Getters
@@ -87,6 +93,10 @@ public class Category {
 	public Nfc getNfc(){
 		return this.nfc;
 	}
+
+	public Barcode getBarcode(){
+		return this.barcode;
+	}
 	
 	public String getBreadCrumb(Context context){
 		if(this.breadCrumb.equals("")){
@@ -110,10 +120,18 @@ public class Category {
 			return false;
 		}
 	}
+
+	public boolean hasBarcode(){
+		if(this.getBarcode().exists()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	@Override
 	public String toString() {
-		return "Category [getTitle()=" + getTitle() + ", getId()=" + getId() + ", getParentId()=" + getParentId() + ", getNumChildren()=" + getNumChildren() + ", getNumItems()=" + getNumItems() + "]";
+		return "Category [getTitle()=" + getTitle() + ", getId()=" + getId() + ", getParentId()=" + getParentId() + ", getNumChildren()=" + getNumChildren() + ", getNumItems()=" + getNumItems() + ", getNfc()=" + getNfc() + ", getBarcode()=" + getBarcode() + ", hasNfc()=" + hasNfc() + ", hasBarcode()=" + hasBarcode() + "]";
 	}
 	
 }

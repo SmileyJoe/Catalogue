@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.Notify;
+import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
+import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
 public class CategoryNew extends SherlockActivity implements OnClickListener {
 
@@ -25,6 +27,10 @@ public class CategoryNew extends SherlockActivity implements OnClickListener {
 	private TextView tvTagExistsWarning;
 	private Button btAddNfcTag;
 	private TextView tvNfcId;
+	private Button btAddBarcode;
+	private TextView tvBarcodeId;
+	private TextView tvBarcodeExistsWarning;
+	private TextView tvBarcodeNotFoundWarning;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +70,18 @@ public class CategoryNew extends SherlockActivity implements OnClickListener {
     	this.tvNfcId = (TextView) findViewById(R.id.tv_nfc_id);
     	
     	this.tvTagExistsWarning = (TextView) findViewById(R.id.tv_nfc_tag_exists_warning);
+    	
+    	this.btAddBarcode = (Button) findViewById(R.id.bt_add_barcode_id);
+    	this.btAddBarcode.setOnClickListener(this);
+    	this.tvBarcodeId = (TextView) findViewById(R.id.tv_barcode_id);
+    	this.tvBarcodeExistsWarning = (TextView) findViewById(R.id.tv_barcode_exists_warning);
+    	this.tvBarcodeNotFoundWarning = (TextView) findViewById(R.id.tv_barcode_not_found_warning);
 	}
 	
 	private void populateView(){
 		this.etCategoryTitle.setText(this.category.getTitle());
 		this.tvNfcId.setText(this.category.getNfc().getTagId());
+		this.tvBarcodeId.setText(this.category.getBarcode().getBarcodeId());
 	}
 
 	@Override
@@ -94,6 +107,9 @@ public class CategoryNew extends SherlockActivity implements OnClickListener {
 			break;
 		case R.id.bt_cancel:
 			finish();
+			break;
+		case R.id.bt_add_barcode_id:
+			Intents.scanBarcode(CategoryNew.this);
 			break;
 		}
 	}
@@ -129,6 +145,30 @@ public class CategoryNew extends SherlockActivity implements OnClickListener {
 						Debug.d("Activity result nfc id", nfcId);
 					}
 				}
+				break;
+			case IntentIntegrator.REQUEST_CODE:
+				IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+				if (scanResult != null) {
+					String barcodeId = scanResult.getContents();
+					DbBarcodeAdapter barcodeAdapter = new DbBarcodeAdapter(this);
+					Barcode barcode = barcodeAdapter.getDetailsByBarcodeId(barcodeId);
+					
+					if(barcode.exists()){
+						this.category.setBarcode(barcode);
+						this.tvBarcodeExistsWarning.setVisibility(View.VISIBLE);
+					} else {
+						this.category.getBarcode().setBarcodeId(barcodeId);
+						this.tvBarcodeExistsWarning.setVisibility(View.GONE);
+					}
+					
+					this.tvBarcodeId.setText(barcodeId);
+					this.tvBarcodeNotFoundWarning.setVisibility(View.GONE);
+					Debug.d("Scan found: ", barcodeId);
+				} else {
+					this.tvBarcodeNotFoundWarning.setVisibility(View.VISIBLE);
+					Debug.d("Scan failed");
+				}
+				
 				break;
 		}
 	}

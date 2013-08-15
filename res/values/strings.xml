@@ -50,8 +50,10 @@
     <string name="tv_item_add_title">Item Add</string>
     <string name="tv_search_title">Search</string>
     <string name="tv_item_nfc_title">NFC</string>
+    <string name="tv_item_barcode_title">Barcode</string>
     
     <string name="bt_item_add_nfc">Add NFC</string>
+    <string name="bt_item_add_barcode">Add Barcode</string>
     
     <string name="tv_item_title_title">Title:</string>
     <string name="tv_item_description_title">Description:</string>
@@ -116,8 +118,11 @@
     
     <string name="bar_title_delete">Delete?</string>
     
-    <string name="tv_tag_exists_warning">WARNING! This tag is associated to something already, if you procedd it will be removed from its previous association.</string>
+    <string name="tv_tag_exists_warning">WARNING! This tag is associated to something already, if you proceed it will be removed from its previous association.</string>
+    <string name="tv_barcode_exists_warning">WARNING! This barcode is associated to something already, if you procedd it will be removed from its previous association.</string>
+    <string name="tv_barcode_not_found_warning">WARNING! No barcode was found</string>
     <string name="tv_details_title">Details:</string>
+    
     
     <string name="tv_type_title_item">Item</string>
     <string name="tv_type_title_category">Category</string>

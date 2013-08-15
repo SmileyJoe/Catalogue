@@ -24,6 +24,7 @@ public class DbCategoryAdapter {
 	private int titleCol;
 	private int parentIdCol;
 	private DbNfcAdapter nfcAdapter;
+	private DbBarcodeAdapter barcodeAdapter;
 	
 	/*****************************************
 	 * CONSTRUCTOR
@@ -34,6 +35,7 @@ public class DbCategoryAdapter {
 		this.dbHelper = new DbHelper(context);
 		this.db = dbHelper.getWritableDatabase();
 		this.nfcAdapter = new DbNfcAdapter(context);
+		this.barcodeAdapter = new DbBarcodeAdapter(context);
 	}
 	
 	/******************************************
@@ -171,6 +173,7 @@ public class DbCategoryAdapter {
 			if(dbId > 0){
 				category.setId(dbId);
 				this.saveNfc(category);
+				this.saveBarcode(category);
 				Notify.toast(this.context, R.string.toast_category_saved, category.getTitle());
 			} else {
 				Notify.toast(this.context, R.string.toast_category_saved_error, category.getTitle());
@@ -199,6 +202,14 @@ public class DbCategoryAdapter {
 		}
 	}
 	
+	private void saveBarcode(Category category){
+		if(category.hasBarcode()){
+			category.getBarcode().setRelId(category.getId());
+			category.getBarcode().setRelTypeId(Constants.CATEGORY);
+			this.barcodeAdapter.save(category.getBarcode());
+		}
+	}
+	
 	/******************************************
 	 * UPDATE
 	 *****************************************/
@@ -207,8 +218,10 @@ public class DbCategoryAdapter {
 		ContentValues values = createContentValues(category);
 		db.update("category", values, " _id = '" + category.getId() + "' ", null);
 		this.nfcAdapter.delete(category.getNfc());
+		this.barcodeAdapter.delete(category.getBarcode());
 		
 		this.saveNfc(category);
+		this.saveBarcode(category);
 		Notify.toast(this.context, R.string.toast_category_updated, category.getTitle());
 	}
 	
@@ -222,6 +235,7 @@ public class DbCategoryAdapter {
 		db.delete("item_rel_category", " category_id='" + category.getId() + "' ", null);
 		this.deleteChildren(category.getId());
 		this.nfcAdapter.delete(category.getNfc());
+		this.barcodeAdapter.delete(category.getBarcode());
 		if(!category.getTitle().equals("")){
 			Notify.toast(this.context, R.string.toast_category_deleted, category.getTitle());
 		}
@@ -279,6 +293,7 @@ public class DbCategoryAdapter {
 		category.setNumChildren(this.getNumberChildren(category.getId()));
 		category.setNumItems(this.getNumberItems(category.getId()));
 		category.setNfc(this.nfcAdapter.getDetailsByRel(category.getId(), Constants.CATEGORY));
+		category.setBarcode(this.barcodeAdapter.getDetailsByRel(category.getId(), Constants.CATEGORY));
 		
 		return category;
 	}

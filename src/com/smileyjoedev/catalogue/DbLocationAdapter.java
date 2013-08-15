@@ -24,6 +24,7 @@ public class DbLocationAdapter {
 	private int titleCol;
 	private int parentIdCol;
 	private DbNfcAdapter nfcAdapter;
+	private DbBarcodeAdapter barcodeAdapter;
 	
 	/*****************************************
 	 * CONSTRUCTOR
@@ -34,6 +35,7 @@ public class DbLocationAdapter {
 		this.dbHelper = new DbHelper(context);
 		this.db = dbHelper.getWritableDatabase();
 		this.nfcAdapter = new DbNfcAdapter(context);
+		this.barcodeAdapter = new DbBarcodeAdapter(context);
 	}
 	
 	/******************************************
@@ -176,6 +178,7 @@ public class DbLocationAdapter {
 			if(dbId > 0){
 				location.setId(dbId);
 				this.saveNfc(location);
+				this.saveBarcode(location);
 				Notify.toast(this.context, R.string.toast_location_saved, location.getTitle());
 			} else {
 				Notify.toast(this.context, R.string.toast_location_saved_error, location.getTitle());
@@ -204,6 +207,14 @@ public class DbLocationAdapter {
 		}
 	}
 	
+	private void saveBarcode(Location location){
+		if(location.hasBarcode()){
+			location.getBarcode().setRelId(location.getId());
+			location.getBarcode().setRelTypeId(Constants.LOCATION);
+			this.barcodeAdapter.save(location.getBarcode());
+		}
+	}
+	
 	/******************************************
 	 * UPDATE
 	 *****************************************/
@@ -212,8 +223,10 @@ public class DbLocationAdapter {
 		ContentValues values = createContentValues(location);
 		db.update("location", values, " _id = '" + location.getId() + "' ", null);
 		this.nfcAdapter.delete(location.getNfc());
+		this.barcodeAdapter.delete(location.getBarcode());
 		
 		this.saveNfc(location);
+		this.saveBarcode(location);
 		Notify.toast(this.context, R.string.toast_location_updated, location.getTitle());
 	}
 	
@@ -227,6 +240,7 @@ public class DbLocationAdapter {
 		db.delete("item_rel_location", " location_id='" + location.getId() + "' ", null);
 		this.deleteChildren(location.getId());
 		this.nfcAdapter.delete(location.getNfc());
+		this.barcodeAdapter.delete(location.getBarcode());
 		if(!location.getTitle().equals("")){
 			Notify.toast(this.context, R.string.toast_location_deleted, location.getTitle());
 		}
@@ -283,6 +297,7 @@ public class DbLocationAdapter {
 		location.setNumChildren(this.getNumberChildren(location.getId()));
 		location.setNumItems(this.getNumberItems(location.getId()));
 		location.setNfc(this.nfcAdapter.getDetailsByRel(location.getId(), Constants.LOCATION));
+		location.setBarcode(this.barcodeAdapter.getDetailsByRel(location.getId(), Constants.LOCATION));
 		
 		return location;
 	}

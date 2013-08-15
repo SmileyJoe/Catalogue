@@ -1,5 +1,6 @@
 package com.smileyjoedev.catalogue;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.smileyjoedev.genLibrary.Debug;
+import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 
 public class Intents {
 
@@ -207,6 +209,11 @@ public class Intents {
 				break;
 		}
 		return intent;
+	}
+	
+	public static void scanBarcode(Activity activity){
+		IntentIntegrator integrator = new IntentIntegrator(activity);
+		integrator.initiateScan();
 	}
 	
 }

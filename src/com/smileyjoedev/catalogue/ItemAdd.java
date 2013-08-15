@@ -31,6 +31,8 @@ import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.GeneralViews;
 import com.smileyjoedev.genLibrary.KeyBoard;
 import com.smileyjoedev.genLibrary.TimeStamp;
+import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
+import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
 public class ItemAdd extends SherlockActivity implements OnClickListener {
 	
@@ -38,6 +40,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	private DbItemAdapter itemAdapter;
 	private DbCategoryAdapter categoryAdapter;
 	private DbLocationAdapter locationAdapter;
+	private DbBarcodeAdapter barcodeAdapter;
 	private boolean edit;
 	private EditText etTitle;
 	private EditText etDescription;
@@ -47,7 +50,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 	private Button btCancel;
 	private Button btTakePhoto;
 	private Button btAddNfcTag;
+	private Button btAddBarcode;
 	private TextView tvNfcId;
+	private TextView tvBarcodeId;
 	private ImageView ivItemPhoto;
 	private LinearLayout llItemCategories;
 	private LinearLayout llItemLocations;
@@ -57,6 +62,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 //	private ArrayList<EditText> etsLocQuan;
 	private Camera camera;
 	private TextView tvTagExistsWarning;
+	private TextView tvBarcodeExistsWarning;
+	private TextView tvBarcodeNotFoundWarning;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +138,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.itemAdapter = new DbItemAdapter(this);
     	this.categoryAdapter = new DbCategoryAdapter(this);
     	this.locationAdapter = new DbLocationAdapter(this);
+    	this.barcodeAdapter = new DbBarcodeAdapter(this);
     	this.edit = false;
     	
     	this.etTitle = (EditText) findViewById(R.id.et_item_title);
@@ -148,6 +156,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.btTakePhoto.setOnClickListener(this);
     	this.btAddNfcTag = (Button) findViewById(R.id.bt_add_nfc_id);
     	this.btAddNfcTag.setOnClickListener(this);
+    	this.btAddBarcode = (Button) findViewById(R.id.bt_add_barcode_id);
+    	this.btAddBarcode.setOnClickListener(this);
     	
     	this.ivItemPhoto = (ImageView) findViewById(R.id.iv_photo);
     	
@@ -157,6 +167,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.tvItemQuantity = (TextView) findViewById(R.id.tv_item_quantity);
     	
     	this.tvNfcId = (TextView) findViewById(R.id.tv_nfc_id);
+    	this.tvBarcodeId = (TextView) findViewById(R.id.tv_barcode_id);
     	
     	this.genViews = new GeneralViews(this);
     	
@@ -167,6 +178,8 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.totalQuantity = 0;
     	
     	this.tvTagExistsWarning = (TextView) findViewById(R.id.tv_nfc_tag_exists_warning);
+    	this.tvBarcodeExistsWarning = (TextView) findViewById(R.id.tv_barcode_exists_warning);
+    	this.tvBarcodeNotFoundWarning = (TextView) findViewById(R.id.tv_barcode_not_found_warning);
     	
     }
     
@@ -197,6 +210,7 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
     	this.etTitle.setText(this.item.getTitle());
     	this.etDescription.setText(this.item.getDesc());
     	this.tvNfcId.setText(this.item.getNfc().getTagId());
+    	this.tvBarcodeId.setText(this.item.getBarcode().getBarcodeId());
     	
     	if(this.camera.isPhotoExists()){
     		this.camera.showPhoto(this.ivItemPhoto);
@@ -389,6 +403,9 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 			case R.id.bt_add_nfc_id:
 				startActivityForResult(Intents.readNfc(this), Constants.ACTIVITY_READ_NFC);
 				break;
+			case R.id.bt_add_barcode_id:
+				Intents.scanBarcode(ItemAdd.this);
+				break;
 		}
 	}
 
@@ -437,6 +454,30 @@ public class ItemAdd extends SherlockActivity implements OnClickListener {
 						Debug.d("Activity result nfc id", nfcId);
 					}
 				}
+				break;
+			case IntentIntegrator.REQUEST_CODE:
+				IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+				if (scanResult != null) {
+					String barcodeId = scanResult.getContents();
+					
+					Barcode barcode = this.barcodeAdapter.getDetailsByBarcodeId(barcodeId);
+					
+					if(barcode.exists()){
+						this.item.setBarcode(barcode);
+						this.tvBarcodeExistsWarning.setVisibility(View.VISIBLE);
+					} else {
+						this.item.getBarcode().setBarcodeId(barcodeId);
+						this.tvBarcodeExistsWarning.setVisibility(View.GONE);
+					}
+					
+					this.tvBarcodeId.setText(barcodeId);
+					this.tvBarcodeNotFoundWarning.setVisibility(View.GONE);
+					Debug.d("Scan found: ", barcodeId);
+				} else {
+					this.tvBarcodeNotFoundWarning.setVisibility(View.VISIBLE);
+					Debug.d("Scan failed");
+				}
+				
 				break;
 		}
 	}

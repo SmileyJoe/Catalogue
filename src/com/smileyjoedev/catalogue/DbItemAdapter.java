@@ -29,6 +29,7 @@ public class DbItemAdapter {
 	private DbLocationAdapter locationAdapter;
 	private DbCategoryAdapter categoryAdapter;
 	private DbNfcAdapter nfcAdapter;
+	private DbBarcodeAdapter barcodeAdapter;
 	
 	/*****************************************
 	 * CONSTRUCTOR
@@ -41,6 +42,7 @@ public class DbItemAdapter {
 		this.locationAdapter = new DbLocationAdapter(context);
 		this.categoryAdapter = new DbCategoryAdapter(context);
 		this.nfcAdapter = new DbNfcAdapter(context);
+		this.barcodeAdapter = new DbBarcodeAdapter(context);
 	}
 	
 	/******************************************
@@ -106,6 +108,7 @@ public class DbItemAdapter {
 			}
 			
 			this.saveNfc(item);
+			this.saveBarcode(item);
 			Notify.toast(this.context, R.string.toast_item_saved, item.getTitle());
 		} else {
 			Notify.toast(this.context, R.string.toast_item_saved_error, item.getTitle());
@@ -119,6 +122,14 @@ public class DbItemAdapter {
 			item.getNfc().setRelId(item.getId());
 			item.getNfc().setRelTypeId(Constants.ITEM);
 			this.nfcAdapter.save(item.getNfc());
+		}
+	}
+	
+	private void saveBarcode(Item item){
+		if(item.hasBarcode()){
+			item.getBarcode().setRelId(item.getId());
+			item.getBarcode().setRelTypeId(Constants.ITEM);
+			this.barcodeAdapter.save(item.getBarcode());
 		}
 	}
 	
@@ -140,6 +151,7 @@ public class DbItemAdapter {
 		this.locationAdapter.deleteItemRel(item.getId());
 		this.categoryAdapter.deleteItemRel(item.getId());
 		this.nfcAdapter.delete(item.getNfc());
+		this.barcodeAdapter.delete(item.getBarcode());
 		
 		for(int i = 0; i < item.getLocations().size(); i++){
 			this.locationAdapter.saveItemRel(item.getLocations().get(i).getLocation().getId(), item.getId(), item.getLocations().get(i).getQuantity());
@@ -149,6 +161,7 @@ public class DbItemAdapter {
 		}
 		
 		this.saveNfc(item);
+		this.saveBarcode(item);
 		
 		Notify.toast(this.context, R.string.toast_item_updated, item.getTitle());
 	}
@@ -165,6 +178,7 @@ public class DbItemAdapter {
 		this.locationAdapter.deleteItemRel(item.getId());
 		this.categoryAdapter.deleteItemRel(item.getId());
 		this.nfcAdapter.delete(item.getNfc());
+		this.barcodeAdapter.delete(item.getBarcode());
 		Notify.toast(this.context, R.string.toast_item_deleted, item.getTitle());
 	}
 	
@@ -246,6 +260,7 @@ public class DbItemAdapter {
 		item.setLocations(this.locationAdapter.getForItem(item.getId()));
 		item.setCategories(this.categoryAdapter.getForItem(item.getId()));
 		item.setNfc(this.nfcAdapter.getDetailsByRel(item.getId(), Constants.ITEM));
+		item.setBarcode(this.barcodeAdapter.getDetailsByRel(item.getId(), Constants.ITEM));
 		
 		return item;
 	}

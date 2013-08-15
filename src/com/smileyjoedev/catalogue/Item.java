@@ -14,6 +14,7 @@ public class Item {
 	private ArrayList<Category> categories;
 	private ArrayList<LocationQuantity> locations;
 	private Nfc nfc;
+	private Barcode barcode;
 	
 	/**********************************************
 	 * Constructor
@@ -26,6 +27,7 @@ public class Item {
 		this.setPdtCreate(0);
 		this.setPdtUpdate(0);
 		this.setNfc(new Nfc());
+		this.setBarcode(new Barcode());
 		
 		Category cat = new Category();
 		ArrayList<Category> cats = new ArrayList<Category>();
@@ -73,6 +75,10 @@ public class Item {
 	public void setNfc(Nfc nfc){
 		this.nfc = nfc;
 	}
+	
+	public void setBarcode(Barcode barcode){
+		this.barcode = barcode;
+	}
 
 	/**********************************************
 	 * Setters
@@ -117,6 +123,10 @@ public class Item {
 	public Nfc getNfc(){
 		return this.nfc;
 	}
+	
+	public Barcode getBarcode(){
+		return this.barcode;
+	}
 
 	public long getTotalQuantity(){
 		long total = 0;
@@ -146,6 +156,14 @@ public class Item {
 		}
 	}
 	
+	public boolean hasBarcode(){
+		if(this.getBarcode().exists()){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**********************************************
 	 * Add
 	 *********************************************/
@@ -165,15 +183,7 @@ public class Item {
 	
 	@Override
 	public String toString() {
-		return "Item [getId()=" + getId() + ", getTitle()=" + getTitle()
-				+ ", getDesc()=" + getDesc() + ", getPdtCreate()="
-				+ getPdtCreate() + ", getCreateFormatted()="
-				+ getCreateFormatted() + ", getPdtUpdate()=" + getPdtUpdate()
-				+ ", getUpdateFormatted()=" + getUpdateFormatted()
-				+ ", getCategories()=" + getCategories() + ", getLocations()="
-				+ getLocations() + ", getNfc()=" + getNfc()
-				+ ", getTotalQuantity()=" + getTotalQuantity()
-				+ ", getLocationTitles()=" + getLocationTitles() + "]";
+		return "Item [getId()=" + getId() + ", getTitle()=" + getTitle() + ", getDesc()=" + getDesc() + ", getPdtCreate()=" + getPdtCreate() + ", getCreateFormatted()=" + getCreateFormatted() + ", getPdtUpdate()=" + getPdtUpdate() + ", getUpdateFormatted()=" + getUpdateFormatted() + ", getCategories()=" + getCategories() + ", getLocations()=" + getLocations() + ", getNfc()=" + getNfc().toString() + ", getBarcode()=" + getBarcode().toString() + ", getTotalQuantity()=" + getTotalQuantity() + ", getLocationTitles()=" + getLocationTitles() + ", hasNfc()=" + hasNfc() + ", hasBarcode()=" + hasBarcode() + "]";
 	}
 	
 	
