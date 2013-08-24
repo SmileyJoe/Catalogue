@@ -20,7 +20,7 @@ import com.smileyjoedev.catalogue.fragments.ItemListFragment;
 import com.smileyjoedev.catalogue.fragments.LocationListFragment;
 import com.smileyjoedev.catalogue.interfaces.SearchDataInterface;
 
-public class Search extends Activity implements SearchDataInterface{
+public class Search extends Base implements SearchDataInterface{
 
 	private String searchTerm;
 	private SearchView etSearch;
@@ -49,6 +49,7 @@ public class Search extends Activity implements SearchDataInterface{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+        this.enableDrawer();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         this.init();
         this.setTabs();
@@ -136,9 +137,6 @@ public class Search extends Activity implements SearchDataInterface{
 //        	case R.id.menu_add_category:
 //        		startActivityForResult(Intents.categoryNew(this, this.categoryId), Constants.ACTIVITY_CATEGORY_NEW);
 //				return true;
-			case android.R.id.home:
-				this.onBackPressed();
-				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }

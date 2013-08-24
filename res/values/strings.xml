@@ -5,6 +5,9 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Catalogue</string>
     
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    
     <string name="tv_no_categories">There are no categories</string>
     <string name="tv_no_locations">There are no locations</string>
     <string name="tv_no_items">There are no items</string>
@@ -127,4 +130,11 @@
     <string name="tv_type_title_item">Item</string>
     <string name="tv_type_title_category">Category</string>
     <string name="tv_type_title_location">Location</string>
+    
+    <string-array name="array_nav_menu">
+        <item>Items</item>
+        <item>Locations</item>
+        <item>Categories</item>
+        <item>Search</item>
+    </string-array>
 </resources>

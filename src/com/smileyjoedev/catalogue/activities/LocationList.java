@@ -23,7 +23,7 @@ import com.smileyjoedev.catalogue.fragments.LocationListFragment;
 import com.smileyjoedev.catalogue.interfaces.LocationDataInterface;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class LocationList extends Activity implements LocationDataInterface {
+public class LocationList extends Base implements LocationDataInterface {
 
 	private long locationId = 0;
 	
@@ -54,6 +54,7 @@ public class LocationList extends Activity implements LocationDataInterface {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.location_list);
+        this.enableDrawer();
         GenViews.createBreadCrumbActionBar(this, getActionBar());
         
         try{
@@ -87,9 +88,6 @@ public class LocationList extends Activity implements LocationDataInterface {
         switch (item.getItemId()) {
         	case R.id.menu_add_location:
         		startActivityForResult(Intents.locationNew(this, getLocationFragment().getLocationId()), Constants.ACTIVITY_LOCATION_NEW);
-				return true;
-			case android.R.id.home:
-				this.onBackPressed();
 				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

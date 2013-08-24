@@ -27,12 +27,13 @@ import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class Main extends Activity implements OnClickListener {
+public class Main extends Base implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		this.enableDrawer();
 		this.initialize();
 	}
 

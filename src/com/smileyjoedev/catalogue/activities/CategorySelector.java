@@ -25,7 +25,7 @@ import com.smileyjoedev.catalogue.interfaces.CategoryDataInterface;
 import com.smileyjoedev.catalogue.objects.Category;
 import com.smileyjoedev.genLibrary.KeyBoard;
 
-public class CategorySelector extends Activity implements OnClickListener, CategoryDataInterface {
+public class CategorySelector extends Base implements OnClickListener, CategoryDataInterface {
 	
 	private HorizontalScrollView hsvBreadCrumb;
 	private Button btSave;
@@ -183,9 +183,6 @@ public class CategorySelector extends Activity implements OnClickListener, Categ
         switch (item.getItemId()) {
         	case R.id.menu_add_category:
         		startActivityForResult(Intents.categoryNew(this, this.categoryId), Constants.ACTIVITY_CATEGORY_NEW);
-				return true;
-			case android.R.id.home:
-				this.onBackPressed();
 				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

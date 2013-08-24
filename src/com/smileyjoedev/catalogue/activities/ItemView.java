@@ -15,7 +15,7 @@ import com.smileyjoedev.catalogue.interfaces.ItemDataInterface;
 import com.smileyjoedev.genLibrary.Debug;
 import com.smileyjoedev.genLibrary.KeyBoard;
 
-public class ItemView extends Activity implements ItemDataInterface {
+public class ItemView extends Base implements ItemDataInterface {
 
 	private long itemId;
 	
@@ -90,9 +90,6 @@ public class ItemView extends Activity implements ItemDataInterface {
 	        case R.id.menu_edit_item:
 	        	startActivityForResult(Intents.itemEdit(this, this.itemId), Constants.ACTIVITY_ITEM_EDIT);
 	        	return true;
-			case android.R.id.home:
-				finish();
-				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }

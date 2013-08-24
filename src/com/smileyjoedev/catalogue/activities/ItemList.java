@@ -12,12 +12,13 @@ import com.smileyjoedev.catalogue.Intents;
 import com.smileyjoedev.catalogue.R;
 import com.smileyjoedev.catalogue.fragments.ItemListFragment;
 
-public class ItemList extends Activity {
+public class ItemList extends Base {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);
+        this.enableDrawer();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         this.init();
 	}
@@ -39,9 +40,6 @@ public class ItemList extends Activity {
         switch (item.getItemId()) {
         	case R.id.menu_add_item:
         		startActivityForResult(Intents.itemAdd(this), Constants.ACTIVITY_ITEM_NEW);
-				return true;
-			case android.R.id.home:
-				this.onBackPressed();
 				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

@@ -41,7 +41,7 @@ import com.smileyjoedev.genLibrary.TimeStamp;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class ItemAdd extends Activity implements OnClickListener {
+public class ItemAdd extends Base implements OnClickListener {
 	
 	private Item item;
 	private DbItemAdapter itemAdapter;
@@ -203,9 +203,6 @@ public class ItemAdd extends Activity implements OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
     	Debug.d("onOptionsItemSelected");
         switch (item.getItemId()) {
-			case android.R.id.home:
-				finish();
-				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }

@@ -14,7 +14,7 @@ import com.smileyjoedev.catalogue.db.DbNfcAdapter;
 import com.smileyjoedev.catalogue.objects.Nfc;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class ReadNFC extends Activity {
+public class ReadNFC extends Base {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

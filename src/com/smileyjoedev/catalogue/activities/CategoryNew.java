@@ -22,7 +22,7 @@ import com.smileyjoedev.genLibrary.Notify;
 import com.smileyjoedev.genLibrary.ZXing.IntentIntegrator;
 import com.smileyjoedev.genLibrary.ZXing.IntentResult;
 
-public class CategoryNew extends Activity implements OnClickListener {
+public class CategoryNew extends Base implements OnClickListener {
 
 	private Button btSave;
 	private Button btCancel;

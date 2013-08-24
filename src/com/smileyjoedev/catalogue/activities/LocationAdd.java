@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class LocationAdd extends Activity implements OnClickListener {
+public class LocationAdd extends Base implements OnClickListener {
 	
 	private long locId;
 	private Location location;

@@ -26,7 +26,7 @@ import com.smileyjoedev.catalogue.objects.Location;
 import com.smileyjoedev.catalogue.objects.Nfc;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class ReadNfcActivity extends Activity implements OnClickListener {
+public class ReadNfcActivity extends Base implements OnClickListener {
 
 	private Button btSave;
 	private Button btCancel;

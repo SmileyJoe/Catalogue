@@ -23,7 +23,7 @@ import com.smileyjoedev.catalogue.fragments.ItemListFragment;
 import com.smileyjoedev.catalogue.interfaces.CategoryDataInterface;
 import com.smileyjoedev.genLibrary.Debug;
 
-public class CategoryList extends Activity implements CategoryDataInterface {
+public class CategoryList extends Base implements CategoryDataInterface {
 
 	private long categoryId = 0;
 	
@@ -54,6 +54,7 @@ public class CategoryList extends Activity implements CategoryDataInterface {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.category_list);
+        this.enableDrawer();
         GenViews.createBreadCrumbActionBar(this, getActionBar());
         
         try{
@@ -87,9 +88,6 @@ public class CategoryList extends Activity implements CategoryDataInterface {
         switch (item.getItemId()) {
         	case R.id.menu_add_category:
         		startActivityForResult(Intents.categoryNew(this, this.categoryId), Constants.ACTIVITY_CATEGORY_NEW);
-				return true;
-			case android.R.id.home:
-				this.onBackPressed();
 				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

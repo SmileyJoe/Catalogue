@@ -25,7 +25,7 @@ import com.smileyjoedev.catalogue.interfaces.LocationDataInterface;
 import com.smileyjoedev.catalogue.objects.Location;
 import com.smileyjoedev.genLibrary.KeyBoard;
 
-public class LocationSelector extends Activity implements OnClickListener, LocationDataInterface {
+public class LocationSelector extends Base implements OnClickListener, LocationDataInterface {
 	
 	private HorizontalScrollView hsvBreadCrumb;
 	private Button btSave;
@@ -182,9 +182,6 @@ public class LocationSelector extends Activity implements OnClickListener, Locat
         switch (item.getItemId()) {
         	case R.id.menu_add_location:
         		startActivityForResult(Intents.locationNew(this, this.locationId), Constants.ACTIVITY_LOCATION_NEW);
-				return true;
-			case android.R.id.home:
-				this.onBackPressed();
 				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
