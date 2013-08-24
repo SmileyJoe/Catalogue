@@ -3,6 +3,7 @@ package com.smileyjoedev.catalogue.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v13.app.FragmentTabHost;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 import com.smileyjoedev.catalogue.Constants;
+import com.smileyjoedev.catalogue.GenViews;
 import com.smileyjoedev.catalogue.R;
 import com.smileyjoedev.catalogue.TabListener;
 import com.smileyjoedev.catalogue.fragments.CategoryListFragment;
@@ -144,32 +146,12 @@ public class Search extends Base implements SearchDataInterface{
     }
 	
 	public void setTabs(){
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-  	
-	  	ActionBar.Tab newTab0 = getActionBar().newTab();
-  		newTab0.setText("Items");
-//	  	newTab0.setTabListener(this);
-	  	newTab0.setTabListener(new TabListener<ItemListFragment>(
-                this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
-	  	newTab0.setTag(Constants.TAB_ITEM);
+	  	FragmentTabHost thContent = (FragmentTabHost) findViewById(R.id.th_content);
+	  	thContent.setup(this, getFragmentManager(), R.id.fl_tab_content);
 	  	
-	  	ActionBar.Tab newTab1 = getActionBar().newTab();
-	  	newTab1.setText("Categories");
-//	  	newTab1.setTabListener(this);
-	  	newTab1.setTabListener(new TabListener<CategoryListFragment>(
-                this, Integer.toString(Constants.TAB_CATEGORY), CategoryListFragment.class, null));
-	  	newTab1.setTag(Constants.TAB_ITEM);
-	  	
-	  	ActionBar.Tab newTab2 = getActionBar().newTab();
-	  	newTab2.setText("Locations");
-//	  	newTab1.setTabListener(this);
-	  	newTab2.setTabListener(new TabListener<LocationListFragment>(
-                this, Integer.toString(Constants.TAB_LOCATION), LocationListFragment.class, null));
-	  	newTab2.setTag(Constants.TAB_LOCATION);
-	  	
-	  	getActionBar().addTab(newTab0);
-	  	getActionBar().addTab(newTab1);
-	  	getActionBar().addTab(newTab2);
+	  	GenViews.addItemListTab(thContent);
+	  	GenViews.addCategoryListTab(thContent);
+	  	GenViews.addLocationListTab(thContent);
 	}
 	
 	@Override

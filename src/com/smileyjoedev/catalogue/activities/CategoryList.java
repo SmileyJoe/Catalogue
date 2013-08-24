@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
+import android.widget.TabHost.TabSpec;
 
 import com.smileyjoedev.catalogue.Broadcast;
 import com.smileyjoedev.catalogue.Constants;
@@ -96,27 +98,12 @@ public class CategoryList extends Base implements CategoryDataInterface {
     }
 	
 	public void setTabs(){
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-  	
-	  	ActionBar.Tab newTab0 = getActionBar().newTab();
-	  	if(this.categoryId == 0){
-	  		newTab0.setText("Categories");
-	  	} else {
-	  		newTab0.setText("Sub-Categories");
-	  	}
-//	  	newTab0.setTabListener(this);
-	  	newTab0.setTabListener(new TabListener<CategoryListFragment>(
-                this, Integer.toString(Constants.TAB_CATEGORY), CategoryListFragment.class, null));
-	  	newTab0.setTag(Constants.TAB_CATEGORY);
-	  	ActionBar.Tab newTab1 = getActionBar().newTab();
-	  	newTab1.setText("Items");
-//	  	newTab1.setTabListener(this);
-	  	newTab1.setTabListener(new TabListener<ItemListFragment>(
-                this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
-	  	newTab1.setTag(Constants.TAB_ITEM);
-	  	getActionBar().addTab(newTab0);
-	  	getActionBar().addTab(newTab1);
 	  	
+	  	FragmentTabHost thContent = (FragmentTabHost) findViewById(R.id.th_content);
+	  	thContent.setup(this, getFragmentManager(), R.id.fl_tab_content);
+	  	
+	  	GenViews.addCategoryListTab(thContent, this.categoryId);
+	  	GenViews.addItemListTab(thContent);
 	}
 
 	@Override
@@ -131,11 +118,9 @@ public class CategoryList extends Base implements CategoryDataInterface {
 		switch(requestCode){
 			case Constants.ACTIVITY_CATEGORY_NEW:
 				if(resultCode == Activity.RESULT_OK){
-					ActionBar.Tab currentTab = getActionBar().getSelectedTab();
-					Debug.d();
-					Debug.d(currentTab.getText().toString());
+					FragmentTabHost thContent = (FragmentTabHost) findViewById(R.id.th_content);
 					
-					switch(Integer.parseInt(currentTab.getTag().toString())){
+					switch(Integer.parseInt(thContent.getCurrentTabTag().toString())){
 						case Constants.TAB_CATEGORY:
 							CategoryListFragment categoryFragment = getCategoryFragment();
 							categoryFragment.updateView();

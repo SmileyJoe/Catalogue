@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -95,26 +96,11 @@ public class LocationList extends Base implements LocationDataInterface {
     }
 	
 	public void setTabs(){
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-  	
-	  	ActionBar.Tab newTab0 = getActionBar().newTab();
-	  	if(this.locationId == 0){
-	  		newTab0.setText("Locations");
-	  	} else {
-	  		newTab0.setText("Sub-Locations");
-	  	}
-//	  	newTab0.setTabListener(this);
-	  	newTab0.setTabListener(new TabListener<LocationListFragment>(
-                this, Integer.toString(Constants.TAB_LOCATION), LocationListFragment.class, null));
-	  	newTab0.setTag(Constants.TAB_LOCATION);
-	  	ActionBar.Tab newTab1 = getActionBar().newTab();
-	  	newTab1.setText("Items");
-//	  	newTab1.setTabListener(this);
-	  	newTab1.setTabListener(new TabListener<ItemListFragment>(
-                this, Integer.toString(Constants.TAB_ITEM), ItemListFragment.class, null));
-	  	newTab1.setTag(Constants.TAB_ITEM);
-	  	getActionBar().addTab(newTab0);
-	  	getActionBar().addTab(newTab1);
+	  	FragmentTabHost thContent = (FragmentTabHost) findViewById(R.id.th_content);
+	  	thContent.setup(this, getFragmentManager(), R.id.fl_tab_content);
+	  	
+	  	GenViews.addLocationListTab(thContent, this.locationId);
+	  	GenViews.addItemListTab(thContent);
 	}
 
 	@Override
@@ -129,11 +115,9 @@ public class LocationList extends Base implements LocationDataInterface {
 		switch(requestCode){
 			case Constants.ACTIVITY_LOCATION_NEW:
 				if(resultCode == Activity.RESULT_OK){
-					ActionBar.Tab currentTab = getActionBar().getSelectedTab();
-					Debug.d();
-					Debug.d(currentTab.getText().toString());
+					FragmentTabHost thContent = (FragmentTabHost) findViewById(R.id.th_content);
 					
-					switch(Integer.parseInt(currentTab.getTag().toString())){
+					switch(Integer.parseInt(thContent.getCurrentTabTag().toString())){
 						case Constants.TAB_LOCATION:
 							LocationListFragment locationFragment = getLocationFragment();
 							locationFragment.updateView();

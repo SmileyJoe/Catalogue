@@ -45,7 +45,6 @@ public class Base extends BaseNav implements OnItemClickListener{
 		}
 		
 		this.hideNav();
-		finish();
 	}
 
 }

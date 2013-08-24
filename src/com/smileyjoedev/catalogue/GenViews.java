@@ -3,13 +3,18 @@ package com.smileyjoedev.catalogue;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v13.app.FragmentTabHost;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.smileyjoedev.catalogue.fragments.CategoryListFragment;
+import com.smileyjoedev.catalogue.fragments.ItemListFragment;
+import com.smileyjoedev.catalogue.fragments.LocationListFragment;
 import com.smileyjoedev.catalogue.objects.Item;
 import com.smileyjoedev.genLibrary.GeneralViews;
 
@@ -87,6 +92,42 @@ public class GenViews extends GeneralViews {
 		view.setLayoutParams(lp);
 		bar.setDisplayShowTitleEnabled(false);
 		bar.setCustomView(view);
+	}
+	
+	public static void addItemListTab(FragmentTabHost host){
+	  	TabSpec spec = host.newTabSpec(Integer.toString(Constants.TAB_ITEM));
+	  	spec.setIndicator("Items");
+	  	host.addTab(spec, ItemListFragment.class, null);
+	}
+	
+	public static void addCategoryListTab(FragmentTabHost host){
+		GenViews.addCategoryListTab(host, -1);
+	}
+	
+	public static void addCategoryListTab(FragmentTabHost host, long categoryId){
+	  	TabSpec spec = host.newTabSpec(Integer.toString(Constants.TAB_CATEGORY));
+	  	if(categoryId <= 0){
+	  		spec.setIndicator("Categories");
+	  	} else {
+	  		spec.setIndicator("Sub-Categories");
+	  	}
+	  	
+	  	host.addTab(spec, CategoryListFragment.class, null);
+	}
+	
+	public static void addLocationListTab(FragmentTabHost host){
+		GenViews.addLocationListTab(host, -1);
+	}
+	
+	public static void addLocationListTab(FragmentTabHost host, long locationId){
+	  	TabSpec spec = host.newTabSpec(Integer.toString(Constants.TAB_LOCATION));
+	  	if(locationId <= 0){
+	  		spec.setIndicator("Locations");
+	  	} else {
+	  		spec.setIndicator("Sub-Locations");
+	  	}
+	  	
+	  	host.addTab(spec, LocationListFragment.class, null);
 	}
 
 }
